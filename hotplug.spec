@@ -37,24 +37,37 @@ Ten pakiet zawiera skrypty potrzebne do obs³ugi urz±dzeñ hotplug
 Summary:	Hotplug pci module
 Summary(pl):	Modu³ pci do hotpluga
 Group:		Applications/System
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description pci
-This is mostly to recover lost boot-time pci hotplug events. Should handle
-2.4.* and 2.6.* PCI (including Cardbus) hotplugging, with a consistent
-framework for adding device and driver specific treatments.
+This is mostly to recover lost boot-time PCI hotplug events. Should
+handle 2.4.x and 2.6.x PCI (including Cardbus) hotplugging, with a
+consistent framework for adding device and driver specific treatments.
+
+%description pci -l pl
+Ten modu³ s³u¿y g³ównie do odzyskiwania zdarzeñ hotplug PCI utraconych
+w czasie startu systemu. Powinien obs³ugiwaæ pod³±czanie urz±dzeñ
+PCI (w³±cznie z Cardbus) dla j±der 2.4.x i 2.6.x ze spójnym szkieletem
+do dodawania urz±dzeñ i zachowañ specyficznych dla sterownika.
 
 %package input
 Summary:	Hotplug input module
 Summary(pl):	Modu³ input do hotpluga
 Group:		Applications/System
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description input
-This loads handlers for those input devices that have drivers compiled in
-kernel. Currently stopping is not supported. Should handle 2.6.* input
-hotplugging, with a consistent framework for adding device and driver
-specific handling.
+This loads handlers for those input devices that have drivers compiled
+in kernel. Currently stopping is not supported. Should handle 2.6.x
+input hotplugging, with a consistent framework for adding device and
+driver specific handling.
+
+%description input -l pl
+Ten modu³ wczytuje programy obs³uguj±ce te urz±dzenia wej¶ciowe, dla
+których sterowniki zosta³y wkompilowane w j±dro. Aktualnie wy³±czanie
+nie jest obs³ugiwane. Powinien obs³ugiwaæ pod³±czanie urz±dzeñ
+wej¶ciowych dla j±der 2.6.x ze spójnym szkieletem do dodawania
+urz±dzeñ i obs³ug± rzeczy specyficznych dla sterownika.
 
 %prep
 %setup -q
