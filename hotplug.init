@@ -24,7 +24,8 @@ case "$1" in
 		busy
 		for RC in /etc/hotplug/*.rc; do
 			$RC start
-			[ $RETVAL -eq 0 ] && RETVAL=$?
+			RET=$?
+			[ $RETVAL -eq 0 ] && RETVAL=$RET
 		done
 		[ $RETVAL -eq 0 ] && ok || fail
 		touch /var/lock/subsys/hotplug
@@ -48,7 +49,8 @@ case "$1" in
   status)
   	for RC in /etc/hotplug/*.rc; do
 		$RC status
-		[ $RETVAL -eq 0 ] && RETVAL=$?
+		RET=$?
+		[ $RETVAL -eq 0 ] && RETVAL=$RET
 	done
 	;;
   restart|force-reload)
