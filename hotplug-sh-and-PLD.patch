@@ -1,0 +1,81 @@
+diff -urN hotplug-2002_04_01.orig/etc/hotplug/hotplug.functions hotplug-2002_04_01/etc/hotplug/hotplug.functions
+--- hotplug-2002_04_01.orig/etc/hotplug/hotplug.functions	Mon Apr  1 23:51:32 2002
++++ hotplug-2002_04_01/etc/hotplug/hotplug.functions	Wed May 29 00:43:35 2002
+@@ -1,4 +1,4 @@
+-#!/bin/bash
++#!/bin/sh
+ #
+ # Setup and utility functions for use in hotplug agents
+ #
+@@ -21,7 +21,7 @@
+ #
+ # for diagnostics
+ #
+-if [ -t -o ! -x /usr/bin/logger ]; then
++if [ -t 1 -o ! -x /usr/bin/logger ]; then
+     mesg () {
+ 	echo "$@"
+     }
+@@ -42,10 +42,9 @@
+ # but some specialized ones (floppy based, etc) may not.  ("type -p"
+ # is also a bash-ism, more robust than "which".)
+ #
+-AWK=`type -p gawk`
+-if [ "$AWK" = "" ]; then
+-    AWK=`type -p awk`
+-fi
++# PLD/Linux: we guarantee there is /bin/awk (via RPM dependenties).
++#
++AWK="/bin/awk"
+ 
+ 
+ #
+diff -urN hotplug-2002_04_01.orig/etc/hotplug/pci.rc hotplug-2002_04_01/etc/hotplug/pci.rc
+--- hotplug-2002_04_01.orig/etc/hotplug/pci.rc	Thu Mar 22 05:54:01 2001
++++ hotplug-2002_04_01/etc/hotplug/pci.rc	Wed May 29 00:48:21 2002
+@@ -16,8 +16,7 @@
+ 	. /etc/rc.d/init.d/functions
+ fi
+ 
+-. hotplug.functions
+-
++. ./hotplug.functions
+ 
+ # # override any of the defaults?
+ # if [ -f /etc/sysconfig/pci ]; then
+@@ -26,8 +25,11 @@
+ 
+ pci_boot_events ()
+ {
+-    LISTER=`type -p pcimodules`
+-    if [ "$LISTER" = "" -o ! -f /proc/bus/pci/devices -o ! -x pci.agent ]; then
++    # type -p doesn't work as expected in pdksh: returns "pcimodules is
++    # /usr/bin/pcimodules". So we assume it's location. It is OK, as we
++    # prepare the distro.
++    LISTER="/usr/bin/pcimodules"
++    if [ ! -x "$LISTER" -o ! -f /proc/bus/pci/devices -o ! -x pci.agent ]; then
+ 	    echo $"** can't synthesize pci hotplug events"
+ 	    return
+     fi
+@@ -61,7 +63,7 @@
+ 	pci_boot_events
+         ;;
+   stop)
+-	echo $"pci stop -- ignored"
++	#echo $"pci stop -- ignored"
+         ;;
+   status)
+ 	echo $"PCI Status for kernel: "  `uname -srm`
+diff -urN hotplug-2002_04_01.orig/etc/hotplug/usb.rc hotplug-2002_04_01/etc/hotplug/usb.rc
+--- hotplug-2002_04_01.orig/etc/hotplug/usb.rc	Mon Apr  1 23:51:32 2002
++++ hotplug-2002_04_01/etc/hotplug/usb.rc	Wed May 29 00:48:43 2002
+@@ -88,7 +88,8 @@
+ 
+ maybe_start_usb ()
+ {
+-    local COUNT SYNTHESIZE
++    # pdksh doesn't understand "local"
++    #local COUNT SYNTHESIZE
+     COUNT=0
+     SYNTHESIZE=false
+ 
