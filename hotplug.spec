@@ -2,7 +2,7 @@ Summary:	Linux Hotplug Scripts
 Summary(pl):	Linuksowe skrypty do urz±dzeñ hotplug
 Name:		hotplug
 Version:	2004_04_01
-Release:	0.1
+Release:	0.2
 Group:		Applications/System
 License:	GPL
 Source0:	ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/%{name}-%{version}.tar.bz2
@@ -32,6 +32,29 @@ This package contains the scripts necessary for hotplug Linux support.
 %description -l pl
 Ten pakiet zawiera skrypty potrzebne do obs³ugi urz±dzeñ hotplug
 (pod³±czanych w czasie pracy) pod Linuksem.
+
+%package pci
+Summary:	Hotlplug pci module
+Summary(pl):	Modu³ pci do hotpluga
+Group:		Applications/System
+Requires:	%{name} = %{version}
+
+%description pci
+This is mostly to recover lost boot-time pci hotplug events. Should handle
+2.4.* and 2.6.* PCI (including Cardbus) hotplugging, with a consistent
+framework for adding device and driver specific treatments.
+
+%package input
+Summary:	Hotlplug input module
+Summary(pl):	Modu³ input do hotpluga
+Group:		Applications/System
+Requires:	%{name} = %{version}
+
+%description input
+This loads handlers for those input devices that have drivers compiled in
+kernel. Currently stopping is not supported. Should handle 2.6.* input
+hotplugging, with a consistent framework for adding device and driver
+specific handling.
 
 %prep
 %setup -q
@@ -78,10 +101,11 @@ fi
 %attr(755,root,root) %{_sbindir}/*
 %attr(754,root,root) /etc/rc.d/init.d/*
 %dir %{_sysconfdir}/hotplug
+%exclude %{_sysconfdir}/hotplug/pci.*
+%exclude %{_sysconfdir}/hotplug/input.*
 %attr(755,root,root) %{_sysconfdir}/hotplug/*.agent
 %attr(755,root,root) %{_sysconfdir}/hotplug/*.rc
 %dir %{_sysconfdir}/hotplug/usb
-%dir %{_sysconfdir}/hotplug/pci
 %{_sysconfdir}/hotplug/hotplug.functions
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/hotplug/blacklist
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/hotplug/*map
@@ -90,3 +114,10 @@ fi
 %attr(755,root,root) %{_sysconfdir}/hotplug.d/default/*.hotplug
 %{_libdir}/hotplug
 %{_mandir}/man8/*.8*
+
+%files pci
+%dir %{_sysconfdir}/hotplug/pci
+%attr(755,root,root) %{_sysconfdir}/hotplug/pci.*
+
+%files input
+%attr(755,root,root) %{_sysconfdir}/hotplug/input.*
