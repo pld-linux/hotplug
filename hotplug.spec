@@ -1,4 +1,5 @@
 Summary:	Linux Hotplug Scripts
+Summary(pl):	Linux'owe skrypty do Hotplug'a
 Name:		hotplug
 Version:	2001_04_24
 Release:	2
@@ -6,16 +7,20 @@ Group:		Applications/System
 Group(de):	Applikationen/System
 Group(pl):	Aplikacje/System
 License:	GPL
-Url:		http://linux-hotplug.sourceforge.net/
 Source0:	http://prdownloads.sourceforge.net/linux-hotplug/%{name}-%{version}.tar.gz
+URL:		http://linux-hotplug.sourceforge.net/
 BuildArch:	noarch
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Prereq:		/sbin/chkconfig
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_exec_prefix	/
 
 %description
 This package contains the scripts necessary for hotplug Linux support.
+
+%description -l pl
+Ten pakiet zawiera skrypty potrzebne do uruchomienia linuxowego supportu
+do urz±dzeñ hotplugowych.
 
 %prep
 %setup -q
