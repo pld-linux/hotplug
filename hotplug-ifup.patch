@@ -1,11 +1,12 @@
---- hotplug-2003_08_05/etc/hotplug/net.agent.wiget	2003-10-11 11:28:40.000000000 +0200
-+++ hotplug-2003_08_05/etc/hotplug/net.agent	2003-10-11 11:28:50.000000000 +0200
-@@ -43,7 +43,7 @@
- 	    # RedHat and similar
+diff -urN hotplug-2004_04_01.org/etc/hotplug/net.agent hotplug-2004_04_01/etc/hotplug/net.agent
+--- hotplug-2004_04_01.org/etc/hotplug/net.agent	2004-04-02 00:38:53.302487344 +0200
++++ hotplug-2004_04_01/etc/hotplug/net.agent	2004-04-02 00:47:24.215816712 +0200
+@@ -66,7 +66,7 @@
+ 	    export IN_HOTPLUG=1
  	    if [ -x /sbin/ifup ]; then
  		debug_mesg invoke ifup $INTERFACE
 -		exec /sbin/ifup $INTERFACE
 +		exec /sbin/ifup $INTERFACE hotplug
- 	    else
- 		mesg "how do I bring interfaces up on this distro?"
- 	    fi
+ 
+ 	    # Gentoo
+ 	    elif [ -f /etc/gentoo-release ]; then

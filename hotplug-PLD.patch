@@ -1,61 +1,183 @@
-diff -urN hotplug-2004_03_11.org/etc/hotplug/hotplug.functions hotplug-2004_03_11/etc/hotplug/hotplug.functions
---- hotplug-2004_03_11.org/etc/hotplug/hotplug.functions	2004-03-12 03:13:42.662424064 +0100
-+++ hotplug-2004_03_11/etc/hotplug/hotplug.functions	2004-03-12 03:13:51.189127808 +0100
-@@ -163,7 +163,7 @@
- 	    LOADED=true
- 	fi
+diff -urN hotplug-2004_04_01.org/etc/hotplug/hotplug.functions hotplug-2004_04_01/etc/hotplug/hotplug.functions
+--- hotplug-2004_04_01.org/etc/hotplug/hotplug.functions	2004-04-02 00:38:53.301487496 +0200
++++ hotplug-2004_04_01/etc/hotplug/hotplug.functions	2004-04-02 01:45:37.628737224 +0200
+@@ -190,4 +190,13 @@
+     # empty line terminates events
+ }
  
--	if [ $LOADED = false ]; then
-+	if [ "$LOADED" = false ]; then
- 	    mesg "missing kernel or user mode driver $MODULE "
- 	fi
- 	if echo "$MODULE" | grep -q "usb-storage" > /dev/null 2>&1 ; then
-diff -urN hotplug-2004_03_11.org/etc/hotplug/ieee1394.agent hotplug-2004_03_11/etc/hotplug/ieee1394.agent
---- hotplug-2004_03_11.org/etc/hotplug/ieee1394.agent	2004-03-12 03:13:42.662424064 +0100
-+++ hotplug-2004_03_11/etc/hotplug/ieee1394.agent	2004-03-12 03:14:35.826341920 +0100
-@@ -1,4 +1,4 @@
--#!/bin/sh
-+#!/bin/bash
- #
- # IEEE1394-specific hotplug policy agent.
- #
-diff -urN hotplug-2004_03_11.org/etc/hotplug/input.agent hotplug-2004_03_11/etc/hotplug/input.agent
---- hotplug-2004_03_11.org/etc/hotplug/input.agent	2004-03-12 03:13:42.669423000 +0100
-+++ hotplug-2004_03_11/etc/hotplug/input.agent	2004-03-12 03:14:41.987405296 +0100
-@@ -1,4 +1,4 @@
--#!/bin/sh
-+#!/bin/bash
- #
- # input-specific hotplug policy agent.
- #
-diff -urN hotplug-2004_03_11.org/etc/hotplug/pci.agent hotplug-2004_03_11/etc/hotplug/pci.agent
---- hotplug-2004_03_11.org/etc/hotplug/pci.agent	2004-03-12 03:13:42.663423912 +0100
-+++ hotplug-2004_03_11/etc/hotplug/pci.agent	2004-03-12 03:14:53.378673560 +0100
-@@ -1,4 +1,4 @@
--#!/bin/sh
-+#!/bin/bash
- #
- # PCI-specific hotplug policy agent.
- #
-diff -urN hotplug-2004_03_11.org/etc/hotplug/pci.rc hotplug-2004_03_11/etc/hotplug/pci.rc
---- hotplug-2004_03_11.org/etc/hotplug/pci.rc	2004-03-12 03:13:42.664423760 +0100
-+++ hotplug-2004_03_11/etc/hotplug/pci.rc	2004-03-12 03:13:51.191127504 +0100
-@@ -1,4 +1,4 @@
--#!/bin/sh
-+#!/bin/bash
- # vim: syntax=sh
- #
- # pci.rc	mostly to recover lost boot-time pci hotplug events
-@@ -45,7 +45,7 @@
- 	if [ "$LISTER" = "" -o ! -f /proc/bus/pci/devices
- 		 -o ! -x pci.agent ]; then
- 	    echo $"** can't synthesize pci hotplug events"
--	    return
-+	    return 1
- 	fi
++####################################################################
++
++# usage: hex2dec hexnumber
++hex2dec()
++{
++    hex="$1"
++    echo | awk "{ printf(\"%d\n\", \"$hex\"); }"
++}
++
+ # vim:syntax=sh
+diff -urN hotplug-2004_04_01.org/etc/hotplug/ieee1394.agent hotplug-2004_04_01/etc/hotplug/ieee1394.agent
+--- hotplug-2004_04_01.org/etc/hotplug/ieee1394.agent	2004-04-02 00:38:53.302487344 +0200
++++ hotplug-2004_04_01/etc/hotplug/ieee1394.agent	2004-04-02 00:54:07.717475136 +0200
+@@ -39,9 +39,9 @@
+ fi
  
- 	# these notifications will be handled by pcimodules
-@@ -64,6 +64,7 @@
+ 
+-device_vendor_id=$((0x$VENDOR_ID))
+-device_specifier_id=$((0x$SPECIFIER_ID))
+-device_version=$((0x$VERSION))
++device_vendor_id=$(hex2dec 0x$VENDOR_ID)
++device_specifier_id=$(hex2dec 0x$SPECIFIER_ID)
++device_version=$(hex2dec 0x$VERSION)
+ 
+ MATCH_VENDOR_ID=0x0001
+ MATCH_SPECIFIER_ID=0x0004
+@@ -63,9 +63,11 @@
+ 	: check match for $module
+ 
+ 	# convert from hex to dec
+-	match_flags=$(($match_flags))
+-	vendor_id=$(($vendor_id)); model_id=$(($model_id))
+-	specifier_id=$(($specifier_id)); version=$(($version))
++	match_flags=$(hex2dec $match_flags)
++	vendor_id=$(hex2dec $vendor_id);
++	model_id=$(hex2dec $model_id)
++	specifier_id=$(hex2dec $specifier_id);
++	version=$(hex2dec $version)
+ 
+ 	: vendor_id $vendor_id $device_vendor_id
+ 	if [ $(($match_flags & $MATCH_VENDOR_ID)) -ne 0 -a $vendor_id -ne $device_vendor_id ]; then
+diff -urN hotplug-2004_04_01.org/etc/hotplug/input.agent hotplug-2004_04_01/etc/hotplug/input.agent
+--- hotplug-2004_04_01.org/etc/hotplug/input.agent	2004-04-02 00:38:53.323484152 +0200
++++ hotplug-2004_04_01/etc/hotplug/input.agent	2004-04-02 00:55:54.221284096 +0200
+@@ -78,14 +78,14 @@
+ 	IFS=/
+ 	set $PRODUCT ''
+ 	IFS="$DEFAULT_IFS"
+-	i_bustype=$((0x$1))
+-	i_vendor=$((0x$2))
+-	i_product=$((0x$3))
+-	i_version=$((0x$4))
++	i_bustype=$(hex2dec 0x$1)
++	i_vendor=$(hex2dec 0x$2)
++	i_product=$(hex2dec 0x$3)
++	i_version=$(hex2dec 0x$4)
+     fi
+ 
+     if [ "$EV" != "" ]; then
+-	i_evBits=$((0x$EV))
++	i_evBits=$(hex2dec 0x$EV)
+     fi
+ 
+     input_join_words i_keyBits "$KEY"
+@@ -101,14 +101,14 @@
+ INPUT_DEVICE_ID_MATCH_VENDOR=2
+ INPUT_DEVICE_ID_MATCH_PRODUCT=4
+ INPUT_DEVICE_ID_MATCH_VERSION=8
+-INPUT_DEVICE_ID_MATCH_EVBIT=$((0x010))
+-INPUT_DEVICE_ID_MATCH_KEYBIT=$((0x020))
+-INPUT_DEVICE_ID_MATCH_RELBIT=$((0x040))
+-INPUT_DEVICE_ID_MATCH_ABSBIT=$((0x080))
+-INPUT_DEVICE_ID_MATCH_MSCBIT=$((0x100))
+-INPUT_DEVICE_ID_MATCH_LEDBIT=$((0x200))
+-INPUT_DEVICE_ID_MATCH_SNDBIT=$((0x400))
+-INPUT_DEVICE_ID_MATCH_FFBIT=$((0x800))
++INPUT_DEVICE_ID_MATCH_EVBIT=$(hex2dec 0x010)
++INPUT_DEVICE_ID_MATCH_KEYBIT=$(hex2dec 0x020)
++INPUT_DEVICE_ID_MATCH_RELBIT=$(hex2dec 0x040)
++INPUT_DEVICE_ID_MATCH_ABSBIT=$(hex2dec 0x080)
++INPUT_DEVICE_ID_MATCH_MSCBIT=$(hex2dec 0x100)
++INPUT_DEVICE_ID_MATCH_LEDBIT=$(hex2dec 0x200)
++INPUT_DEVICE_ID_MATCH_SNDBIT=$(hex2dec 0x400)
++INPUT_DEVICE_ID_MATCH_FFBIT=$(hex2dec 0x800)
+ 
+ 
+ input_match_bits ()
+@@ -118,8 +118,8 @@
+     if [ "$dev_bits" = "" ]; then
+ 	return 0
+     fi
+-    mword=$((0x${mod_bits##*:}))
+-    dword=$((0x${dev_bits##*:}))
++    mword=$(hex2dec 0x${mod_bits##*:})
++    dword=$(hex2dec 0x${dev_bits##*:})
+ 
+     while true; do
+ 	if [ $(( $mword & $dword != $mword )) -eq 1 ]; then
+@@ -163,12 +163,12 @@
+ 	set $line
+ 
+ 	module="$1"
+-	matchBits=$(($2))
++	matchBits=$(hex2dec $2)
+ 
+-	bustype=$(($3))
+-	vendor=$(($4))
+-	product=$(($5))
+-	version=$(($6))
++	bustype=$(hex2dec $3)
++	vendor=$(hex2dec $4)
++	product=$(hex2dec $5)
++	version=$(hex2dec $6)
+ 
+ 	evBits="$7"
+ 	keyBits="$8"
+@@ -180,7 +180,7 @@
+ 	ledBits="$3"
+ 	sndBits="$4"
+ 	ffBits="$5"
+-	driverInfo=$(($6))
++	driverInfo=$(hex2dec $6)
+ 
+ 	: checkmatch $module
+ 
+diff -urN hotplug-2004_04_01.org/etc/hotplug/pci.agent hotplug-2004_04_01/etc/hotplug/pci.agent
+--- hotplug-2004_04_01.org/etc/hotplug/pci.agent	2004-04-02 00:38:53.303487192 +0200
++++ hotplug-2004_04_01/etc/hotplug/pci.agent	2004-04-02 00:57:14.024152216 +0200
+@@ -59,18 +59,18 @@
+ 
+ pci_convert_vars ()
+ {
+-    pci_class=$((0x$PCI_CLASS))
++    pci_class=$(hex2dec 0x$PCI_CLASS)
+ 
+     set $(echo $PCI_ID | sed -e 's/\([^:]*\):\(.*\)/\1 \2/')
+-    pci_id_vendor=$((0x$1))
+-    pci_id_device=$((0x$2))
++    pci_id_vendor=$(hex2dec 0x$1)
++    pci_id_device=$(hex2dec 0x$2)
+ 
+     set $(echo $PCI_SUBSYS_ID | sed -e 's/\([^:]*\):\(.*\)/\1 \2/')
+-    pci_subid_vendor=$((0x$1))
+-    pci_subid_device=$((0x$2))
++    pci_subid_vendor=$(hex2dec 0x$1)
++    pci_subid_device=$(hex2dec 0x$2)
+ }
+ 
+-PCI_ANY=$((0xffffffff))
++PCI_ANY=$(hex2dec 0xffffffff)
+ 
+ 
+ #
+@@ -95,9 +95,12 @@
+ 	esac
+ 
+ 	# convert the fields from hex to dec
+-	vendor=$(($vendor)); device=$(($device))
+-	subvendor=$(($subvendor)); subdevice=$(($subdevice))
+-	class=$(($class)); class_mask=$(($class_mask))
++	vendor=$(hex2dec $vendor)
++	device=$(hex2dec $device)
++	subvendor=$(hex2dec $subvendor)
++	subdevice=$(hex2dec $subdevice)
++	class=$(hex2dec $class)
++	class_mask=$(hex2dec $class_mask)
+ 
+ 	: checkmatch $module
+ 
+diff -urN hotplug-2004_04_01.org/etc/hotplug/pci.rc hotplug-2004_04_01/etc/hotplug/pci.rc
+--- hotplug-2004_04_01.org/etc/hotplug/pci.rc	2004-04-02 00:38:53.303487192 +0200
++++ hotplug-2004_04_01/etc/hotplug/pci.rc	2004-04-02 01:00:37.344242864 +0200
+@@ -65,6 +65,7 @@
  case "$1" in
    start)
  	pci_boot_events
@@ -63,80 +185,118 @@ diff -urN hotplug-2004_03_11.org/etc/hotplug/pci.rc hotplug-2004_03_11/etc/hotpl
          ;;
    stop)
  	# echo $"pci stop -- ignored"
-diff -urN hotplug-2004_03_11.org/etc/hotplug/usb.agent hotplug-2004_03_11/etc/hotplug/usb.agent
---- hotplug-2004_03_11.org/etc/hotplug/usb.agent	2004-03-12 03:13:42.665423608 +0100
-+++ hotplug-2004_03_11/etc/hotplug/usb.agent	2004-03-12 03:15:10.258107496 +0100
-@@ -1,4 +1,4 @@
--#!/bin/sh
-+#!/bin/bash
+diff -urN hotplug-2004_04_01.org/etc/hotplug/usb.agent hotplug-2004_04_01/etc/hotplug/usb.agent
+--- hotplug-2004_04_01.org/etc/hotplug/usb.agent	2004-04-02 00:38:53.318484912 +0200
++++ hotplug-2004_04_01/etc/hotplug/usb.agent	2004-04-02 00:59:47.428831160 +0200
+@@ -181,9 +181,9 @@
+                                   -e "s+/\([0-9]\)\.\([0-9][0-9]\)+/0\1\2+" \
+ 			  -e "s+/\([0-9][0-9]\)\.\([0-9][0-9]\)+/\1\2+"`
+     set $(echo $PRODUCT | sed -e 's+\([^/]*\)/\([^/]*\)/\(.*\)+\1 \2 \3+')
+-    usb_idVendor=$((0x$1))
+-    usb_idProduct=$((0x$2))
+-    usb_bcdDevice=$((0x$3))
++    usb_idVendor=$(hex2dec 0x$1)
++    usb_idProduct=$(hex2dec 0x$2)
++    usb_bcdDevice=$(hex2dec 0x$3)
+ 
+     if [ "$TYPE" != "" ]; then
+     	IFS=/
+@@ -193,9 +193,9 @@
+         usb_bDeviceProtocol=$3
+ 	IFS="$DEFAULT_IFS"
+     elif [ -r $SYSFS/$DEVPATH/bDeviceClass ]; then
+-	usb_bDeviceClass=$((0x$(cat $SYSFS/$DEVPATH/bDeviceClass)))
+-	usb_bDeviceSubClass=$((0x$(cat $SYSFS/$DEVPATH/bDeviceSubClass)))
+-	usb_bDeviceProtocol=$((0x$(cat $SYSFS/$DEVPATH/bDeviceProtocol)))
++	usb_bDeviceClass=$(hex2dec 0x$(cat $SYSFS/$DEVPATH/bDeviceClass))
++	usb_bDeviceSubClass=$(hex2dec 0x$(cat $SYSFS/$DEVPATH/bDeviceSubClass))
++	usb_bDeviceProtocol=$(hex2dec 0x$(cat $SYSFS/$DEVPATH/bDeviceProtocol))
+     else
+ 	# out-of-range values
+ 	usb_bDeviceClass=1000
+@@ -211,9 +211,9 @@
+     	usb_bInterfaceProtocol=$3
+ 	IFS="$DEFAULT_IFS"
+     elif [ -r $SYSFS/$DEVPATH/bInterfaceClass ]; then
+-	usb_bInterfaceClass=$((0x$(cat $SYSFS/$DEVPATH/bInterfaceClass)))
+-	usb_bInterfaceSubClass=$((0x$(cat $SYSFS/$DEVPATH/bInterfaceSubClass)))
+-	usb_bInterfaceProtocol=$((0x$(cat $SYSFS/$DEVPATH/bInterfaceProtocol)))
++	usb_bInterfaceClass=$(hex2dec 0x$(cat $SYSFS/$DEVPATH/bInterfaceClass))
++	usb_bInterfaceSubClass=$(hex2dec 0x$(cat $SYSFS/$DEVPATH/bInterfaceSubClass))
++	usb_bInterfaceProtocol=$(hex2dec 0x$(cat $SYSFS/$DEVPATH/bInterfaceProtocol))
+     else
+ 	# out-of-range values
+ 	usb_bInterfaceClass=1000
+@@ -222,16 +222,16 @@
+     fi
+ }
+ 
+-USB_MATCH_VENDOR=$((0x0001))
+-USB_MATCH_PRODUCT=$((0x0002))
+-USB_MATCH_DEV_LO=$((0x0004))
+-USB_MATCH_DEV_HI=$((0x0008))
+-USB_MATCH_DEV_CLASS=$((0x0010))
+-USB_MATCH_DEV_SUBCLASS=$((0x0020))
+-USB_MATCH_DEV_PROTOCOL=$((0x0040))
+-USB_MATCH_INT_CLASS=$((0x0080))
+-USB_MATCH_INT_SUBCLASS=$((0x0100))
+-USB_MATCH_INT_PROTOCOL=$((0x0200))
++USB_MATCH_VENDOR=$(hex2dec 0x0001)
++USB_MATCH_PRODUCT=$(hex2dec 0x0002)
++USB_MATCH_DEV_LO=$(hex2dec 0x0004)
++USB_MATCH_DEV_HI=$(hex2dec 0x0008)
++USB_MATCH_DEV_CLASS=$(hex2dec 0x0010)
++USB_MATCH_DEV_SUBCLASS=$(hex2dec 0x0020)
++USB_MATCH_DEV_PROTOCOL=$(hex2dec 0x0040)
++USB_MATCH_INT_CLASS=$(hex2dec 0x0080)
++USB_MATCH_INT_SUBCLASS=$(hex2dec 0x0100)
++USB_MATCH_INT_PROTOCOL=$(hex2dec 0x0200)
+ 
  #
- # USB-specific hotplug policy agent.
- #
-@@ -128,7 +128,7 @@
-     fi
+ # stdin is "modules.usbmap" syntax
+@@ -255,21 +255,21 @@
+ 	set $line
  
-     # sysfs files may already be gone
--    if [ $ACTION = 'remove' ]; then
-+    if [ "$ACTION" = 'remove' ]; then
- 	exit 0
-     fi
+ 	module=$1
+-	match_flags=$(($2))
++	match_flags=$(hex2dec $2)
  
-@@ -141,7 +141,7 @@
-     # this could care about changing the default config, or warning
-     # when the user hooked a fast device up so it runs slowly.
-     TMP=$(cat $SYSFS/$DEVPATH/bNumConfigurations)
--    if [ $TMP -ne 1 -a "$ACTION" = add ]; then
-+    if [ "$TMP" -ne 1 -a "$ACTION" = add ]; then
- 	mesg Keeping default configuration with $SYSFS/$DEVPATH
-     fi
+-	idVendor=$(($3))
+-	idProduct=$(($4))
+-	bcdDevice_lo=$(($5))
+-	bcdDevice_hi=$(($6))
+-
+-	bDeviceClass=$(($7))
+-	bDeviceSubClass=$(($8))
+-	bDeviceProtocol=$(($9))
++	idVendor=$(hex2dec $3)
++	idProduct=$(hex2dec $4)
++	bcdDevice_lo=$(hex2dec $5)
++	bcdDevice_hi=$(hex2dec $6)
++
++	bDeviceClass=$(hex2dec $7)
++	bDeviceSubClass=$(hex2dec $8)
++	bDeviceProtocol=$(hex2dec $9)
  
-@@ -424,7 +424,7 @@
-     ;;
+ 	shift 9
+-	bInterfaceClass=$(($1))
+-	bInterfaceSubClass=$(($2))
+-	bInterfaceProtocol=$(($3))
++	bInterfaceClass=$(hex2dec $1)
++	bInterfaceSubClass=$(hex2dec $2)
++	bInterfaceProtocol=$(hex2dec $3)
  
- remove)
--    if [ -x $REMOVER ]; then
-+    if [ -x "$REMOVER" ]; then
- 	$REMOVER
-     fi
-     rm -f $REMOVER
-diff -urN hotplug-2004_03_11.org/etc/hotplug/usb.rc hotplug-2004_03_11/etc/hotplug/usb.rc
---- hotplug-2004_03_11.org/etc/hotplug/usb.rc	2004-03-12 03:13:42.667423304 +0100
-+++ hotplug-2004_03_11/etc/hotplug/usb.rc	2004-03-12 03:13:51.195126896 +0100
-@@ -1,4 +1,4 @@
--#!/bin/sh
-+#!/bin/bash
- # vim: syntax=sh
- #
- # usb.rc	This brings the USB subsystem up and down safely.
-@@ -37,7 +37,7 @@
+ 	: checkmatch $module
  
- # In its currently-recommended configuration, XFree86 3.3.6 always opens
- # /dev/input/mice; so mousedev and input must be loaded before X11 starts.
--if [ $X11_USBMICE_HACK = true ]; then
-+if [ "$X11_USBMICE_HACK" = true ]; then
-     STATIC_MODULE_LIST="$MOUSE_MODULES $STATIC_MODULE_LIST"
- fi
- 
-@@ -207,7 +207,7 @@
-     # hotplug events didn't fire during booting;
-     # cope with devices that enumerated earlier
-     # and may not have been fully configured.
--    if [ $SYNTHESIZE = true ]; then
-+    if [ "$SYNTHESIZE" = true ]; then
-     	usb_boot_events
-     fi
- 
-diff -urN hotplug-2004_03_11.org/etc/hotplug.d/default/default.hotplug hotplug-2004_03_11/etc/hotplug.d/default/default.hotplug
---- hotplug-2004_03_11.org/etc/hotplug.d/default/default.hotplug	2004-03-12 03:13:42.671422696 +0100
-+++ hotplug-2004_03_11/etc/hotplug.d/default/default.hotplug	2004-03-12 03:13:51.197126592 +0100
-@@ -28,7 +28,9 @@
+diff -urN hotplug-2004_04_01.org/etc/hotplug.d/default/default.hotplug hotplug-2004_04_01/etc/hotplug.d/default/default.hotplug
+--- hotplug-2004_04_01.org/etc/hotplug.d/default/default.hotplug	2004-04-02 00:38:53.324484000 +0200
++++ hotplug-2004_04_01/etc/hotplug.d/default/default.hotplug	2004-04-02 01:01:00.153775288 +0200
+@@ -32,7 +32,7 @@
  
  # DEBUG=yes export DEBUG
  
 -debug_mesg "arguments ($*) env (`env`)"
-+if [ "$DEBUG" != "" ]; then
-+	debug_mesg "arguments ($*) env (`env`)"
-+fi
++[ -n "$DEBUG" ] && debug_mesg "arguments ($*) env (`env`)"
  
  #
  # Only one required argument:  event type type being dispatched.
