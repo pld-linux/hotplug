@@ -17,8 +17,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 This package contains the scripts necessary for hotplug Linux support.
 
 %description -l pl
-Ten pakiet zawiera skrypty potrzebne do uruchomienia linuxowego supportu
-do urz±dzeñ hotplugowych.
+Ten pakiet zawiera skrypty potrzebne do uruchomienia linuxowego
+supportu do urz±dzeñ hotplugowych.
 
 %prep
 %setup -q
@@ -26,7 +26,7 @@ do urz±dzeñ hotplugowych.
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sbindir},%{_sysconfdir}/hotplug,/etc/rc.d/init.d,%{_mandir}/man8}
-	
+
 install -m 755 sbin/* $RPM_BUILD_ROOT/%{_sbindir}
 
 cp -a -r etc/hotplug/* $RPM_BUILD_ROOT%{_sysconfdir}/hotplug/
