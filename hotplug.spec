@@ -1,12 +1,12 @@
 Summary:	Linux Hotplug Scripts
 Summary(pl):	Linuksowe skrypty do urz±dzeñ hotplug
 Name:		hotplug
-Version:	2004_04_01
-Release:	7
+Version:	2004_09_20
+Release:	1
 Group:		Applications/System
 License:	GPL
 Source0:	ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/%{name}-%{version}.tar.bz2
-# Source0-md5:	527f0242481024c77255f3c1fa09e6ee
+# Source0-md5:	1e725439b04a9e1321a34f922ddc50d2
 Source1:	%{name}.init
 Source2:	%{name}-update-usb.usermap
 Source3:	%{name}-update-usb.usermap.8
