@@ -2,13 +2,17 @@ Summary:	Linux Hotplug Scripts
 Summary(pl):	Linuksowe skrypty do urz±dzeñ hotplug
 Name:		hotplug
 Version:	2002_04_01
-Release:	1
+Release:	2
 Group:		Applications/System
 License:	GPL
 Source0:	http://prdownloads.sourceforge.net/linux-hotplug/%{name}-%{version}.tar.gz
 Source1:	%{name}.init
+Patch0:		%{name}-sh-and-PLD.patch
 URL:		http://linux-hotplug.sourceforge.net/
 BuildArch:	noarch
+# Requires wc
+Requires:	textutils
+Requires:	awk
 Prereq:		/sbin/chkconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -23,6 +27,7 @@ Ten pakiet zawiera skrypty potrzebne do obs³ugi urz±dzeñ hotplug
 
 %prep
 %setup -q
+%patch0 -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
