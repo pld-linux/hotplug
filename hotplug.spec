@@ -1,13 +1,15 @@
 Summary:	Linux Hotplug Scripts
 Summary(pl):	Linuksowe skrypty do urz±dzeñ hotplug
 Name:		hotplug
-Version:	2004_03_11
-Release:	1
+Version:	2004_03_29
+Release:	0.1
 Group:		Applications/System
 License:	GPL
 Source0:	ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/%{name}-%{version}.tar.bz2
-# Source0-md5:	274757fa967881f123598c1eb15576d9
+# Source0-md5:	cde2f3695251b5c6b6ce96d18bd8067b
 Source1:	%{name}.init
+Source2:	%{name}-update-usb.usermap
+Source3:	%{name}-update-usb.usermap.8
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-ifup.patch
 URL:		http://linux-hotplug.sourceforge.net/
@@ -46,8 +48,8 @@ install -d $RPM_BUILD_ROOT{%{_libdir},%{_sbindir},%{_sysconfdir}/hotplug,/etc/rc
 	sbindir=$RPM_BUILD_ROOT%{_sbindir} \
 	mandir=$RPM_BUILD_ROOT%{_mandir}
 
-install sbin/* debian/update-usb.usermap $RPM_BUILD_ROOT%{_sbindir}
-install *.8 debian/*.8  $RPM_BUILD_ROOT%{_mandir}/man8
+install sbin/* %{SOURCE2} $RPM_BUILD_ROOT%{_sbindir}
+install *.8 %{SOURCE3}  $RPM_BUILD_ROOT%{_mandir}/man8
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/hotplug
 ln -s %{_sysconfdir}/hotplug.d $RPM_BUILD_ROOT%{_libdir}/%{name}
 
