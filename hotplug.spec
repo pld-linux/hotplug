@@ -26,6 +26,8 @@ BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_exec_prefix	/
+%define		_libdir		/%{_lib}
+%define		_sbindir	/sbin
 
 %description
 This package contains the scripts necessary for hotplug Linux support.
@@ -71,18 +73,20 @@ wej¶ciowych dla j±der 2.6.x ze spójnym szkieletem do dodawania
 urz±dzeñ i obs³ug± rzeczy specyficznych dla sterownika.
 
 %package digicam
-Summary:	Hotplug definitions for usb digital cameras
-Summary(pl):	Definicje Hotpluga dla aparatów cyfrowych na USB.
+Summary:	Hotplug definitions for USB digital cameras
+Summary(pl):	Definicje Hotpluga dla aparatów cyfrowych na USB
 Group:		Applications/System
+PreReq:		libgphoto2
+Requires(post,postun):	fileutils
+Requires(post,postun):	grep
 Requires:	%{name} = %{version}-%{release}
-Requires:	libgphoto2
 
 %description digicam
-This creates approperite definitions in usb.usermap for digital
+This creates appropriate definitions to usb.usermap for digital
 cameras based on output of libgphoto2.
 
 %description digicam -l pl
-Ten modó³ dodaje definicje dla aparatów cyfrowych opieraj±c siê na
+Ten modu³ dodaje definicje dla aparatów cyfrowych opieraj±c siê na
 danych z libgphoto2.
 
 %prep
@@ -136,23 +140,29 @@ else
 fi
 
 %post digicam
-usermap="%{_sysconfdir}/hotplug/usb.usermap"
-tmpusermap="/tmp/usermap.$$"
-if [ -f "$usermap" ]; then
-	grep -v "digicam" $usermap > $tmpusermap
-	mv $tmpusermap $usermap
-	/usr/lib/libgphoto2/print-usb-usermap digicam | grep -v '#' >> $usermap
-else
-	/usr/lib/libgphoto2/print-usb-usermap digicam | grep -v '#' >> $usermap
+if [ "$1" = "1" ]; then
+	usermap="%{_sysconfdir}/hotplug/usb.usermap"
+	tmpusermap="${usermap}.tmp"
+	umask 022
+	if [ -f "$usermap" ]; then
+		grep -v "digicam" $usermap > $tmpusermap
+		mv -f $tmpusermap $usermap
+		/usr/lib/libgphoto2/print-usb-usermap digicam | grep -v '#' >> $usermap
+	else
+		/usr/lib/libgphoto2/print-usb-usermap digicam | grep -v '#' >> $usermap
+	fi
 fi
 
 %postun digicam
-usermap="%{_sysconfdir}/hotplug/usb.usermap"
-tmpusermap="/tmp/usermap.$$"
-if [ -f "$usermap" ]; then
-        grep -v "digicam" $usermap > $tmpusermap
-        mv $tmpusermap $usermap
-fi;
+if [ "$1" = "0" ]; then
+	usermap="%{_sysconfdir}/hotplug/usb.usermap"
+	tmpusermap="${usermap}.tmp"
+	umask 022
+	if [ -f "$usermap" ]; then
+	        grep -v "digicam" $usermap > $tmpusermap
+	        mv -f $tmpusermap $usermap
+	fi
+fi
 
 %files
 %defattr(644,root,root,755)
