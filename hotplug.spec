@@ -2,7 +2,7 @@ Summary:	Linux Hotplug Scripts
 Summary(pl):	Linuksowe skrypty do urz±dzeñ hotplug
 Name:		hotplug
 Version:	2004_04_01
-Release:	6
+Release:	7
 Group:		Applications/System
 License:	GPL
 Source0:	ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/%{name}-%{version}.tar.bz2
@@ -102,13 +102,10 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_libdir},%{_sbindir},%{_sysconfdir}/hotplug,/etc/rc.d/init.d,%{_mandir}/man8}
 
 %{__make} install \
-	prefix=$RPM_BUILD_ROOT%{_prefix} \
-	etcdir=$RPM_BUILD_ROOT%{_sysconfdir} \
-	sbindir=$RPM_BUILD_ROOT%{_sbindir} \
-	mandir=$RPM_BUILD_ROOT%{_mandir}
+	prefix=$RPM_BUILD_ROOT
 
-install sbin/* %{SOURCE2} $RPM_BUILD_ROOT%{_sbindir}
-install *.8 %{SOURCE3}  $RPM_BUILD_ROOT%{_mandir}/man8
+install %{SOURCE2} $RPM_BUILD_ROOT%{_sbindir}
+install %{SOURCE3} $RPM_BUILD_ROOT%{_mandir}/man8
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/hotplug
 ln -s %{_sysconfdir}/hotplug.d $RPM_BUILD_ROOT%{_libdir}/%{name}
 install %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/hotplug/usb/digicam
@@ -187,6 +184,8 @@ fi
 %attr(755,root,root) %{_sysconfdir}/hotplug.d/default/*.hotplug
 %{_libdir}/hotplug
 %{_mandir}/man8/*.8*
+%dir /var/run/usb
+%dir /var/log/hotplug
 
 %files pci
 %defattr(644,root,root,755)
