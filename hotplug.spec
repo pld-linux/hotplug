@@ -34,7 +34,7 @@ Ten pakiet zawiera skrypty potrzebne do obs³ugi urz±dzeñ hotplug
 (pod³±czanych w czasie pracy) pod Linuksem.
 
 %package pci
-Summary:	Hotlplug pci module
+Summary:	Hotplug pci module
 Summary(pl):	Modu³ pci do hotpluga
 Group:		Applications/System
 Requires:	%{name} = %{version}
@@ -45,7 +45,7 @@ This is mostly to recover lost boot-time pci hotplug events. Should handle
 framework for adding device and driver specific treatments.
 
 %package input
-Summary:	Hotlplug input module
+Summary:	Hotplug input module
 Summary(pl):	Modu³ input do hotpluga
 Group:		Applications/System
 Requires:	%{name} = %{version}
