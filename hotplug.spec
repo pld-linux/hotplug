@@ -43,8 +43,6 @@ cp -a -r etc/hotplug/* $RPM_BUILD_ROOT%{_sysconfdir}/hotplug/
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/hotplug
 install *.8  $RPM_BUILD_ROOT%{_mandir}/man8
 
-gzip -9nf README ChangeLog
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -66,7 +64,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc {README,ChangeLog}.gz
+%doc README ChangeLog
 %attr(755,root,root) %{_sbindir}/*
 %attr(755,root,root) /etc/rc.d/init.d/*
 %attr(755,root,root) %{_sysconfdir}/hotplug/*.agent
