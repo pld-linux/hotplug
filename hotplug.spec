@@ -2,7 +2,7 @@ Summary:	Linux Hotplug Scripts
 Summary(pl):	Linuksowe skrypty do urz±dzeñ hotplug
 Name:		hotplug
 Version:	2003_05_01
-Release:	3
+Release:	4
 Group:		Applications/System
 License:	GPL
 Source0:	http://dl.sourceforge.net/sourceforge/linux-hotplug/%{name}-%{version}.tar.gz
@@ -36,14 +36,18 @@ Ten pakiet zawiera skrypty potrzebne do obs³ugi urz±dzeñ hotplug
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sbindir},%{_sysconfdir}/hotplug,/etc/rc.d/init.d,%{_mandir}/man8}
-install -d $RPM_BUILD_ROOT%{_libdir}/hotplug
+install -d $RPM_BUILD_ROOT%{_libdir}
+
+%{__make} install \
+	prefix=$RPM_BUILD_ROOT%{_prefix} \
+	etcdir=$RPM_BUILD_ROOT%{_sysconfdir} \
+	sbindir=$RPM_BUILD_ROOT%{_sbindir} \
+	mandir=$RPM_BUILD_ROOT%{_mandir}
 
 install -m 755 sbin/* debian/update-usb.usermap $RPM_BUILD_ROOT%{_sbindir}
-
-cp -a -r etc/hotplug/* $RPM_BUILD_ROOT%{_sysconfdir}/hotplug/
-
-install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/hotplug
 install *.8 debian/*.8  $RPM_BUILD_ROOT%{_mandir}/man8
+install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/hotplug
+ln -s %{_sysconfdir}/hotplug.d $RPM_BUILD_ROOT%{_libdir}/%{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -69,6 +73,7 @@ fi
 %doc README ChangeLog
 %attr(755,root,root) %{_sbindir}/*
 %attr(755,root,root) /etc/rc.d/init.d/*
+%dir %{_sysconfdir}/hotplug
 %attr(755,root,root) %{_sysconfdir}/hotplug/*.agent
 %attr(755,root,root) %{_sysconfdir}/hotplug/*.rc
 %dir %{_sysconfdir}/hotplug/usb
@@ -76,5 +81,8 @@ fi
 %{_sysconfdir}/hotplug/hotplug.functions
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/hotplug/blacklist
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/hotplug/*map
-%dir %{_libdir}/hotplug
+%dir %{_sysconfdir}/hotplug.d
+%dir %{_sysconfdir}/hotplug.d/default
+%attr(755,root,root) %{_sysconfdir}/hotplug.d/default/*.hotplug
+%{_libdir}/hotplug
 %{_mandir}/man8/*.8*
