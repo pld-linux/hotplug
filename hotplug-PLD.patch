@@ -1,5 +1,6 @@
---- hotplug-2003_05_01/etc/hotplug/hotplug.functions.wiget	2003-04-15 18:38:42.000000000 +0200
-+++ hotplug-2003_05_01/etc/hotplug/hotplug.functions	2003-06-25 22:38:25.000000000 +0200
+diff -urN hotplug-2003_05_01.org/etc/hotplug/hotplug.functions hotplug-2003_05_01/etc/hotplug/hotplug.functions
+--- hotplug-2003_05_01.org/etc/hotplug/hotplug.functions	2003-07-10 22:42:27.000000000 +0200
++++ hotplug-2003_05_01/etc/hotplug/hotplug.functions	2003-07-10 22:45:51.000000000 +0200
 @@ -46,10 +46,9 @@
  # but some specialized ones (floppy based, etc) may not.  ("type -p"
  # is also a bash-ism, more robust than "which".)
@@ -14,8 +15,18 @@
  
  
  #
---- hotplug-2003_05_01/etc/hotplug/pci.rc.wiget	2003-04-15 18:38:42.000000000 +0200
-+++ hotplug-2003_05_01/etc/hotplug/pci.rc	2003-06-25 22:39:22.000000000 +0200
+@@ -164,7 +163,7 @@
+ 	    LOADED=true
+ 	fi
+ 
+-	if [ $LOADED = false ]; then
++	if [ "$LOADED" = false ]; then
+ 	    mesg "missing kernel or user mode driver $MODULE "
+ 	fi
+     done
+diff -urN hotplug-2003_05_01.org/etc/hotplug/pci.rc hotplug-2003_05_01/etc/hotplug/pci.rc
+--- hotplug-2003_05_01.org/etc/hotplug/pci.rc	2003-07-10 22:42:27.000000000 +0200
++++ hotplug-2003_05_01/etc/hotplug/pci.rc	2003-07-10 22:42:33.000000000 +0200
 @@ -1,4 +1,4 @@
 -#!/bin/sh
 +#!/bin/bash
@@ -31,11 +42,60 @@
          ;;
    status)
  	echo $"PCI Status for kernel: "  `uname -srm`
---- hotplug-2003_05_01/etc/hotplug/usb.rc.wiget	2003-04-15 18:38:43.000000000 +0200
-+++ hotplug-2003_05_01/etc/hotplug/usb.rc	2003-06-25 22:39:53.000000000 +0200
+diff -urN hotplug-2003_05_01.org/etc/hotplug/usb.agent hotplug-2003_05_01/etc/hotplug/usb.agent
+--- hotplug-2003_05_01.org/etc/hotplug/usb.agent	2003-07-10 22:42:27.000000000 +0200
++++ hotplug-2003_05_01/etc/hotplug/usb.agent	2003-07-10 22:44:44.000000000 +0200
+@@ -128,7 +128,7 @@
+     fi
+ 
+     # sysfs files may already be gone
+-    if [ $ACTION = 'remove' ]; then
++    if [ "$ACTION" = 'remove' ]; then
+ 	exit 0
+     fi
+ 
+@@ -141,7 +141,7 @@
+     # this could care about changing the default config, or warning
+     # when the user hooked a fast device up so it runs slowly.
+     TMP=$(cat $SYSFS/$DEVPATH/bNumConfigurations)
+-    if [ $TMP -ne 1 -a "$ACTION" = add ]; then
++    if [ "$TMP" -ne 1 -a "$ACTION" = add ]; then
+ 	mesg Keeping default configuration with $SYSFS/$DEVPATH
+     fi
+ 
+@@ -429,7 +429,7 @@
+     ;;
+ 
+ remove)
+-    if [ -x $REMOVER ]; then
++    if [ -x "$REMOVER" ]; then
+ 	$REMOVER
+     fi
+     rm -f $REMOVER
+diff -urN hotplug-2003_05_01.org/etc/hotplug/usb.rc hotplug-2003_05_01/etc/hotplug/usb.rc
+--- hotplug-2003_05_01.org/etc/hotplug/usb.rc	2003-07-10 22:42:27.000000000 +0200
++++ hotplug-2003_05_01/etc/hotplug/usb.rc	2003-07-10 22:46:38.000000000 +0200
 @@ -1,4 +1,4 @@
 -#!/bin/sh
 +#!/bin/bash
  # vim: syntax=sh
  #
  # usb.rc	This brings the USB subsystem up and down safely.
+@@ -42,7 +42,7 @@
+ 
+ # In its currently-recommended configuration, XFree86 3.3.6 always opens
+ # /dev/input/mice; so mousedev and input must be loaded before X11 starts.
+-if [ $X11_USBMICE_HACK = true ]; then
++if [ "$X11_USBMICE_HACK" = true ]; then
+     STATIC_MODULE_LIST="$MOUSE_MODULES $STATIC_MODULE_LIST"
+ fi
+ 
+@@ -193,7 +193,7 @@
+     # hotplug events didn't fire during booting;
+     # cope with devices that enumerated earlier
+     # and may not have been fully configured.
+-    if [ $SYNTHESIZE = true ]; then
++    if [ "$SYNTHESIZE" = true ]; then
+     	usb_boot_events
+     fi
+ 
