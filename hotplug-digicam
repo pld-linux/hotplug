@@ -1,0 +1,3 @@
+chgrp digicam "$DEVICE"
+chmod g+w "$DEVICE"
+
