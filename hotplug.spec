@@ -5,7 +5,7 @@ Version:	2002_08_26
 Release:	1
 Group:		Applications/System
 License:	GPL
-Source0:	http://unc.dl.sourceforge.net/sourceforge/linux-hotplug/%{name}-%{version}.tar.gz
+Source0:	http://dl.sourceforge.net/sourceforge/linux-hotplug/%{name}-%{version}.tar.gz
 # Source0-md5:	eb3e3aacfe072e7bd31a4e01fd8af2e0
 Source1:	%{name}.init
 Patch0:		%{name}-PLD.patch
