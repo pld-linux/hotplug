@@ -104,6 +104,8 @@ install -d $RPM_BUILD_ROOT{%{_libdir},%{_sbindir},%{_sysconfdir}/hotplug,/etc/rc
 %{__make} install \
 	prefix=$RPM_BUILD_ROOT
 
+install etc/hotplug/{dasd.permissions,pnp.distmap,tape.permissions} $RPM_BUILD_ROOT%{_sysconfdir}/hotplug/
+
 install %{SOURCE2} $RPM_BUILD_ROOT%{_sbindir}
 install %{SOURCE3} $RPM_BUILD_ROOT%{_mandir}/man8
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/hotplug
@@ -179,6 +181,7 @@ fi
 %exclude %{_sysconfdir}/hotplug/usb/digicam
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/hotplug/blacklist
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/hotplug/*map
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/hotplug/*.permissions
 %dir %{_sysconfdir}/hotplug.d
 %dir %{_sysconfdir}/hotplug.d/default
 %attr(755,root,root) %{_sysconfdir}/hotplug.d/default/*.hotplug
