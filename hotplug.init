@@ -2,7 +2,7 @@
 #
 # hotplug	This scripts starts hotpluggable subsystems.
 #
-# chkconfig:	2345 35 65
+# chkconfig:	2345 08 92
 # description:	Starts and stops each hotpluggable subsystem. \
 #		On startup, may simulate hotplug events for devices \
 #		that were present at boot time, before filesystems \
