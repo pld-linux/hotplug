@@ -4,8 +4,6 @@ Name:		hotplug
 Version:	2001_04_24
 Release:	2
 Group:		Applications/System
-Group(de):	Applikationen/System
-Group(pl):	Aplikacje/System
 License:	GPL
 Source0:	http://prdownloads.sourceforge.net/linux-hotplug/%{name}-%{version}.tar.gz
 URL:		http://linux-hotplug.sourceforge.net/
