@@ -2,13 +2,14 @@ Summary:	Linux Hotplug Scripts
 Summary(pl):	Linuksowe skrypty do urz±dzeñ hotplug
 Name:		hotplug
 Version:	2003_08_05
-Release:	1
+Release:	2
 Group:		Applications/System
 License:	GPL
 Source0:	http://dl.sourceforge.net/sourceforge/linux-hotplug/%{name}-%{version}.tar.gz
 # Source0-md5:	200eef33ddfcee9c023a3a7797ac6919
 Source1:	%{name}.init
 Patch0:		%{name}-PLD.patch
+Patch1:		%{name}-ifup.patch
 URL:		http://linux-hotplug.sourceforge.net/
 PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
@@ -33,6 +34,7 @@ Ten pakiet zawiera skrypty potrzebne do obs³ugi urz±dzeñ hotplug
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
