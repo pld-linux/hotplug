@@ -2,7 +2,7 @@ Summary:	Linux Hotplug Scripts
 Summary(pl):	Linuksowe skrypty do urz±dzeñ hotplug
 Name:		hotplug
 Version:	2004_04_01
-Release:	2
+Release:	3
 Group:		Applications/System
 License:	GPL
 Source0:	ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/%{name}-%{version}.tar.bz2
@@ -145,6 +145,14 @@ if [ -f "$usermap" ]; then
 else
 	/usr/lib/libgphoto2/print-usb-usermap digicam | grep -v '#' >> $usermap
 fi
+
+%postun digicam
+usermap="%{_sysconfdir}/hotplug/usb.usermap"
+tmpusermap="/tmp/usermap.$$"
+if [ -f "$usermap" ]; then
+        grep -v "digicam" $usermap > $tmpusermap
+        mv $tmpusermap $usermap
+fi;
 
 %files
 %defattr(644,root,root,755)
