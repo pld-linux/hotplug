@@ -1,21 +1,7 @@
-diff -urN hotplug-2003_08_05.org/etc/hotplug/hotplug.functions hotplug-2003_08_05/etc/hotplug/hotplug.functions
---- hotplug-2003_08_05.org/etc/hotplug/hotplug.functions	2003-08-17 14:32:56.000000000 +0200
-+++ hotplug-2003_08_05/etc/hotplug/hotplug.functions	2003-08-17 14:50:56.000000000 +0200
-@@ -53,10 +53,9 @@
- # but some specialized ones (floppy based, etc) may not.  ("type -p"
- # is also a bash-ism, more robust than "which".)
- #
--AWK=`type -p gawk`
--if [ "$AWK" = "" ]; then
--    AWK=`type -p awk`
--fi
-+# PLD/Linux: we guarantee there is /bin/awk (via RPM dependenties).
-+#
-+AWK="/bin/awk"
- 
- 
- #
-@@ -171,7 +170,7 @@
+diff -urN hotplug-2004_03_11.org/etc/hotplug/hotplug.functions hotplug-2004_03_11/etc/hotplug/hotplug.functions
+--- hotplug-2004_03_11.org/etc/hotplug/hotplug.functions	2004-03-12 01:39:19.279717209 +0100
++++ hotplug-2004_03_11/etc/hotplug/hotplug.functions	2004-03-12 01:39:48.118539442 +0100
+@@ -163,7 +163,7 @@
  	    LOADED=true
  	fi
  
@@ -23,44 +9,36 @@ diff -urN hotplug-2003_08_05.org/etc/hotplug/hotplug.functions hotplug-2003_08_0
 +	if [ "$LOADED" = false ]; then
  	    mesg "missing kernel or user mode driver $MODULE "
  	fi
-     done
-diff -urN hotplug-2003_08_05.org/etc/hotplug/pci.rc hotplug-2003_08_05/etc/hotplug/pci.rc
---- hotplug-2003_08_05.org/etc/hotplug/pci.rc	2003-08-17 14:32:56.000000000 +0200
-+++ hotplug-2003_08_05/etc/hotplug/pci.rc	2003-08-17 14:51:55.000000000 +0200
+ 	if echo "$MODULE" | grep -q "usb-storage" > /dev/null 2>&1 ; then
+diff -urN hotplug-2004_03_11.org/etc/hotplug/pci.rc hotplug-2004_03_11/etc/hotplug/pci.rc
+--- hotplug-2004_03_11.org/etc/hotplug/pci.rc	2004-03-12 01:39:19.315709499 +0100
++++ hotplug-2004_03_11/etc/hotplug/pci.rc	2004-03-12 01:44:15.178330689 +0100
 @@ -1,4 +1,4 @@
 -#!/bin/sh
 +#!/bin/bash
  # vim: syntax=sh
  #
  # pci.rc	mostly to recover lost boot-time pci hotplug events
-@@ -35,7 +35,7 @@
-     LISTER=`type -p pcimodules`
-     if [ "$LISTER" = "" -o ! -f /proc/bus/pci/devices -o ! -x pci.agent ]; then
+@@ -45,7 +45,7 @@
+ 	if [ "$LISTER" = "" -o ! -f /proc/bus/pci/devices
+ 		 -o ! -x pci.agent ]; then
  	    echo $"** can't synthesize pci hotplug events"
 -	    return
 +	    return 1
-     fi
+ 	fi
  
-     # make sure the pci agent will run
-@@ -54,12 +54,15 @@
- 	    /sbin/hotplug pci
- 	done
-     done
-+    return 0
- }
- 
- # See how we were called.
+ 	# these notifications will be handled by pcimodules
+@@ -64,6 +64,7 @@
  case "$1" in
    start)
  	pci_boot_events
-+	RET=$?
-+        exit $RET
++	exit $?
          ;;
    stop)
  	# echo $"pci stop -- ignored"
-diff -urN hotplug-2003_08_05.org/etc/hotplug/usb.agent hotplug-2003_08_05/etc/hotplug/usb.agent
---- hotplug-2003_08_05.org/etc/hotplug/usb.agent	2003-08-17 14:32:56.000000000 +0200
-+++ hotplug-2003_08_05/etc/hotplug/usb.agent	2003-08-17 14:50:56.000000000 +0200
+diff -urN hotplug-2004_03_11.org/etc/hotplug/usb.agent hotplug-2004_03_11/etc/hotplug/usb.agent
+--- hotplug-2004_03_11.org/etc/hotplug/usb.agent	2004-03-12 01:39:19.327706929 +0100
++++ hotplug-2004_03_11/etc/hotplug/usb.agent	2004-03-12 01:39:48.123538371 +0100
 @@ -128,7 +128,7 @@
      fi
  
@@ -79,7 +57,7 @@ diff -urN hotplug-2003_08_05.org/etc/hotplug/usb.agent hotplug-2003_08_05/etc/ho
  	mesg Keeping default configuration with $SYSFS/$DEVPATH
      fi
  
-@@ -429,7 +429,7 @@
+@@ -424,7 +424,7 @@
      ;;
  
  remove)
@@ -88,16 +66,16 @@ diff -urN hotplug-2003_08_05.org/etc/hotplug/usb.agent hotplug-2003_08_05/etc/ho
  	$REMOVER
      fi
      rm -f $REMOVER
-diff -urN hotplug-2003_08_05.org/etc/hotplug/usb.rc hotplug-2003_08_05/etc/hotplug/usb.rc
---- hotplug-2003_08_05.org/etc/hotplug/usb.rc	2003-08-17 14:32:56.000000000 +0200
-+++ hotplug-2003_08_05/etc/hotplug/usb.rc	2003-08-17 14:50:56.000000000 +0200
+diff -urN hotplug-2004_03_11.org/etc/hotplug/usb.rc hotplug-2004_03_11/etc/hotplug/usb.rc
+--- hotplug-2004_03_11.org/etc/hotplug/usb.rc	2004-03-12 01:39:19.329706500 +0100
++++ hotplug-2004_03_11/etc/hotplug/usb.rc	2004-03-12 01:39:48.126537729 +0100
 @@ -1,4 +1,4 @@
 -#!/bin/sh
 +#!/bin/bash
  # vim: syntax=sh
  #
  # usb.rc	This brings the USB subsystem up and down safely.
-@@ -42,7 +42,7 @@
+@@ -37,7 +37,7 @@
  
  # In its currently-recommended configuration, XFree86 3.3.6 always opens
  # /dev/input/mice; so mousedev and input must be loaded before X11 starts.
@@ -106,7 +84,7 @@ diff -urN hotplug-2003_08_05.org/etc/hotplug/usb.rc hotplug-2003_08_05/etc/hotpl
      STATIC_MODULE_LIST="$MOUSE_MODULES $STATIC_MODULE_LIST"
  fi
  
-@@ -193,7 +193,7 @@
+@@ -207,7 +207,7 @@
      # hotplug events didn't fire during booting;
      # cope with devices that enumerated earlier
      # and may not have been fully configured.
@@ -115,3 +93,17 @@ diff -urN hotplug-2003_08_05.org/etc/hotplug/usb.rc hotplug-2003_08_05/etc/hotpl
      	usb_boot_events
      fi
  
+diff -urN hotplug-2004_03_11.org/etc/hotplug.d/default/default.hotplug hotplug-2004_03_11/etc/hotplug.d/default/default.hotplug
+--- hotplug-2004_03_11.org/etc/hotplug.d/default/default.hotplug	2004-03-12 01:39:19.350702003 +0100
++++ hotplug-2004_03_11/etc/hotplug.d/default/default.hotplug	2004-03-12 01:41:43.646791324 +0100
+@@ -28,7 +28,9 @@
+ 
+ # DEBUG=yes export DEBUG
+ 
+-debug_mesg "arguments ($*) env (`env`)"
++if [ "$DEBUG" != "" ]; then
++	debug_mesg "arguments ($*) env (`env`)"
++fi
+ 
+ #
+ # Only one required argument:  event type type being dispatched.
