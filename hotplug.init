@@ -20,6 +20,7 @@ case "$1" in
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/hotplug ]; then
 		msg_starting "hotplug"
+		busy
 		for RC in /etc/hotplug/*.rc; do
 			$RC start
 		done
@@ -33,6 +34,7 @@ case "$1" in
   stop)
 	if [ -f /var/lock/subsys/hotplug ]; then
 		msg_stopping "hotplug"
+		busy
 		for RC in /etc/hotplug/*.rc; do
 			$RC stop
 		done
