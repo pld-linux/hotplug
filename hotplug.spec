@@ -2,7 +2,7 @@ Summary:	Linux Hotplug Scripts
 Summary(pl):	Linuksowe skrypty do urz±dzeñ hotplug
 Name:		hotplug
 Version:	2004_04_01
-Release:	1
+Release:	2
 Group:		Applications/System
 License:	GPL
 Source0:	ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/%{name}-%{version}.tar.bz2
@@ -116,8 +116,10 @@ fi
 %{_mandir}/man8/*.8*
 
 %files pci
+%defattr(644,root,root,755)
 %dir %{_sysconfdir}/hotplug/pci
 %attr(755,root,root) %{_sysconfdir}/hotplug/pci.*
 
 %files input
+%defattr(644,root,root,755)
 %attr(755,root,root) %{_sysconfdir}/hotplug/input.*
