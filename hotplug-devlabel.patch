@@ -7,7 +7,7 @@ diff -uNr hotplug-2004_04_01/etc/hotplug/ieee1394.agent hotplug-2004_04_01.devla
      fi
 +
 +    if [ -x /sbin/devlabel ]; then
-+        /sbin/devlabel restart
++        /sbin/devlabel restart -q
 +    fi
      ;;
  
@@ -18,7 +18,7 @@ diff -uNr hotplug-2004_04_01/etc/hotplug/ieee1394.agent hotplug-2004_04_01.devla
      done
 +
 +    if [ -x /sbin/devlabel ]; then
-+        /sbin/devlabel restart
++        /sbin/devlabel restart -q
 +    fi
      ;;
  
@@ -32,7 +32,7 @@ diff -uNr hotplug-2004_04_01/etc/hotplug/pci.agent hotplug-2004_04_01.devlabel/e
      fi
 +
 +    if [ -x /sbin/devlabel ]; then
-+        /sbin/devlabel restart
++        /sbin/devlabel restart -q
 +    fi
      ;;
  
@@ -46,7 +46,7 @@ diff -uNr hotplug-2004_04_01/etc/hotplug/usb.agent hotplug-2004_04_01.devlabel/e
      fi
 +
 +    if [ -x /sbin/devlabel ]; then
-+        /sbin/devlabel restart
++        /sbin/devlabel restart -q
 +    fi
      ;;
  
@@ -57,7 +57,7 @@ diff -uNr hotplug-2004_04_01/etc/hotplug/usb.agent hotplug-2004_04_01.devlabel/e
      fi
 +
 +    if [ -x /sbin/devlabel ]; then
-+        /sbin/devlabel restart
++        /sbin/devlabel restart -q
 +    fi
      ;;
  
