@@ -1,5 +1,5 @@
 Summary:	Linux Hotplug Scripts
-Summary(pl):	Linux'owe skrypty do Hotplug'a
+Summary(pl):	Linuksowe skrypty do urz±dzeñ hotplug
 Name:		hotplug
 Version:	2001_04_24
 Release:	2
@@ -17,8 +17,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 This package contains the scripts necessary for hotplug Linux support.
 
 %description -l pl
-Ten pakiet zawiera skrypty potrzebne do uruchomienia linuxowego
-supportu do urz±dzeñ hotplugowych.
+Ten pakiet zawiera skrypty potrzebne do obs³ugi urz±dzeñ hotplug
+(pod³±czanych w czasie pracy) pod Linuksem.
 
 %prep
 %setup -q
@@ -27,14 +27,14 @@ supportu do urz±dzeñ hotplugowych.
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sbindir},%{_sysconfdir}/hotplug,/etc/rc.d/init.d,%{_mandir}/man8}
 
-install -m 755 sbin/* $RPM_BUILD_ROOT/%{_sbindir}
+install -m 755 sbin/* $RPM_BUILD_ROOT%{_sbindir}
 
 cp -a -r etc/hotplug/* $RPM_BUILD_ROOT%{_sysconfdir}/hotplug/
 
 install etc/rc.d/init.d/* $RPM_BUILD_ROOT/etc/rc.d/init.d/
 install *.8  $RPM_BUILD_ROOT%{_mandir}/man8
 
-%{__gzip} README ChangeLog
+gzip -9nf README ChangeLog
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -47,10 +47,11 @@ rm -rf $RPM_BUILD_ROOT
 #	/etc/rc.d/init.d/hotplug restart >&2
 #fi
 
-
 %preun
-if [ "$1" = 0 ] ; then
-	/etc/rc.d/init.d/hotplug stop >&2
+if [ "$1" = "0" ] ; then
+	if [ -f /var/lock/subsys/hotplug ]; then
+		/etc/rc.d/init.d/hotplug stop >&2
+	fi
 	/sbin/chkconfig --del hotplug
 fi
 
@@ -59,5 +60,5 @@ fi
 %doc {README,ChangeLog}.gz
 %attr(755,root,root) %{_sbindir}/*
 %attr(755,root,root) /etc/rc.d/init.d/*
-%{_sysconfdir}/hotplug/*
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/hotplug/*
 %{_mandir}/man8/*.8*
