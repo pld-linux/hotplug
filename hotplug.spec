@@ -10,14 +10,15 @@ Source0:	http://dl.sourceforge.net/sourceforge/linux-hotplug/%{name}-%{version}.
 Source1:	%{name}.init
 Patch0:		%{name}-PLD.patch
 URL:		http://linux-hotplug.sourceforge.net/
-BuildArch:	noarch
+PreReq:		rc-scripts
+Requires(post,preun):	/sbin/chkconfig
 # Requires wc
 Requires:	textutils
 Requires:	awk
 Requires:	usbutils
 Requires:	sed
 Requires:	bash
-Prereq:		/sbin/chkconfig
+BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_exec_prefix	/
