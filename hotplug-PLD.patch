@@ -1,6 +1,6 @@
-diff -urN hotplug-2003_05_01.org/etc/hotplug/hotplug.functions hotplug-2003_05_01/etc/hotplug/hotplug.functions
---- hotplug-2003_05_01.org/etc/hotplug/hotplug.functions	2003-07-10 22:42:27.000000000 +0200
-+++ hotplug-2003_05_01/etc/hotplug/hotplug.functions	2003-07-10 22:45:51.000000000 +0200
+diff -urN hotplug-2003_05_01/etc/hotplug/hotplug.functions aaa/hotplug-2003_05_01/etc/hotplug/hotplug.functions
+--- hotplug-2003_05_01/etc/hotplug/hotplug.functions	2003-04-15 18:38:42.000000000 +0200
++++ aaa/hotplug-2003_05_01/etc/hotplug/hotplug.functions	2003-07-13 14:03:06.000000000 +0200
 @@ -46,10 +46,9 @@
  # but some specialized ones (floppy based, etc) may not.  ("type -p"
  # is also a bash-ism, more robust than "which".)
@@ -24,17 +24,38 @@ diff -urN hotplug-2003_05_01.org/etc/hotplug/hotplug.functions hotplug-2003_05_0
  	    mesg "missing kernel or user mode driver $MODULE "
  	fi
      done
-diff -urN hotplug-2003_05_01.org/etc/hotplug/pci.rc hotplug-2003_05_01/etc/hotplug/pci.rc
---- hotplug-2003_05_01.org/etc/hotplug/pci.rc	2003-07-10 22:42:27.000000000 +0200
-+++ hotplug-2003_05_01/etc/hotplug/pci.rc	2003-07-10 22:42:33.000000000 +0200
+diff -urN hotplug-2003_05_01/etc/hotplug/pci.rc aaa/hotplug-2003_05_01/etc/hotplug/pci.rc
+--- hotplug-2003_05_01/etc/hotplug/pci.rc	2003-04-15 18:38:42.000000000 +0200
++++ aaa/hotplug-2003_05_01/etc/hotplug/pci.rc	2003-07-13 14:05:40.000000000 +0200
 @@ -1,4 +1,4 @@
 -#!/bin/sh
 +#!/bin/bash
  # vim: syntax=sh
  #
  # pci.rc	mostly to recover lost boot-time pci hotplug events
-@@ -62,7 +62,7 @@
+@@ -35,7 +35,7 @@
+     LISTER=`type -p pcimodules`
+     if [ "$LISTER" = "" -o ! -f /proc/bus/pci/devices -o ! -x pci.agent ]; then
+ 	    echo $"** can't synthesize pci hotplug events"
+-	    return
++	    return 1
+     fi
+ 
+     # make sure the pci agent will run
+@@ -54,15 +54,19 @@
+ 	    /sbin/hotplug pci
+ 	done
+     done
++		
++	return 0
+ }
+ 
+ # See how we were called.
+ case "$1" in
+   start)
  	pci_boot_events
++	RET=$?
++	exit $RET
          ;;
    stop)
 -	echo $"pci stop -- ignored"
@@ -42,9 +63,9 @@ diff -urN hotplug-2003_05_01.org/etc/hotplug/pci.rc hotplug-2003_05_01/etc/hotpl
          ;;
    status)
  	echo $"PCI Status for kernel: "  `uname -srm`
-diff -urN hotplug-2003_05_01.org/etc/hotplug/usb.agent hotplug-2003_05_01/etc/hotplug/usb.agent
---- hotplug-2003_05_01.org/etc/hotplug/usb.agent	2003-07-10 22:42:27.000000000 +0200
-+++ hotplug-2003_05_01/etc/hotplug/usb.agent	2003-07-10 22:44:44.000000000 +0200
+diff -urN hotplug-2003_05_01/etc/hotplug/usb.agent aaa/hotplug-2003_05_01/etc/hotplug/usb.agent
+--- hotplug-2003_05_01/etc/hotplug/usb.agent	2003-04-15 18:38:43.000000000 +0200
++++ aaa/hotplug-2003_05_01/etc/hotplug/usb.agent	2003-07-13 14:03:06.000000000 +0200
 @@ -128,7 +128,7 @@
      fi
  
@@ -72,9 +93,9 @@ diff -urN hotplug-2003_05_01.org/etc/hotplug/usb.agent hotplug-2003_05_01/etc/ho
  	$REMOVER
      fi
      rm -f $REMOVER
-diff -urN hotplug-2003_05_01.org/etc/hotplug/usb.rc hotplug-2003_05_01/etc/hotplug/usb.rc
---- hotplug-2003_05_01.org/etc/hotplug/usb.rc	2003-07-10 22:42:27.000000000 +0200
-+++ hotplug-2003_05_01/etc/hotplug/usb.rc	2003-07-10 22:46:38.000000000 +0200
+diff -urN hotplug-2003_05_01/etc/hotplug/usb.rc aaa/hotplug-2003_05_01/etc/hotplug/usb.rc
+--- hotplug-2003_05_01/etc/hotplug/usb.rc	2003-04-15 18:38:43.000000000 +0200
++++ aaa/hotplug-2003_05_01/etc/hotplug/usb.rc	2003-07-13 14:03:06.000000000 +0200
 @@ -1,4 +1,4 @@
 -#!/bin/sh
 +#!/bin/bash
