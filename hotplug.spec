@@ -37,10 +37,19 @@ install *.8  $RPM_BUILD_ROOT%{_mandir}/man8
 rm -rf $RPM_BUILD_ROOT
 
 %post
-%chkconfig_add
+/sbin/chkconfig --add hotplug
+# Uncomment this out if we find that we need to restart the system when
+# we have loaded a new copy of the package.
+#if test -r /var/lock/subsys/hotplug ; then
+#	/etc/rc.d/init.d/hotplug restart >&2
+#fi
+
 
 %preun
-%chkconfig_del
+if [ "$1" = 0 ] ; then
+	/etc/rc.d/init.d/hotplug stop >&2
+	/sbin/chkconfig --del hotplug
+fi
 
 %files
 %defattr(644,root,root,755)
