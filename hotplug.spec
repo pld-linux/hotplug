@@ -2,7 +2,7 @@ Summary:	Linux Hotplug Scripts
 Summary(pl):	Linuksowe skrypty do urz±dzeñ hotplug
 Name:		hotplug
 Version:	2004_04_01
-Release:	3
+Release:	4
 Group:		Applications/System
 License:	GPL
 Source0:	ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/%{name}-%{version}.tar.bz2
@@ -13,6 +13,7 @@ Source3:	%{name}-update-usb.usermap.8
 Source4:	%{name}-digicam
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-ifup.patch
+Patch2:		%{name}-readlink.patch
 URL:		http://linux-hotplug.sourceforge.net/
 PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
@@ -93,6 +94,7 @@ danych z libgphoto2.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
