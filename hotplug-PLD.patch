@@ -1,7 +1,6 @@
-diff -urN hotplug-2002_04_01.orig/etc/hotplug/hotplug.functions hotplug-2002_04_01/etc/hotplug/hotplug.functions
---- hotplug-2002_04_01.orig/etc/hotplug/hotplug.functions	Mon Apr  1 23:51:32 2002
-+++ hotplug-2002_04_01/etc/hotplug/hotplug.functions	Wed May 29 20:27:54 2002
-@@ -42,10 +42,9 @@
+--- hotplug-2003_05_01/etc/hotplug/hotplug.functions.wiget	2003-04-15 18:38:42.000000000 +0200
++++ hotplug-2003_05_01/etc/hotplug/hotplug.functions	2003-06-25 22:38:25.000000000 +0200
+@@ -46,10 +46,9 @@
  # but some specialized ones (floppy based, etc) may not.  ("type -p"
  # is also a bash-ism, more robust than "which".)
  #
@@ -15,16 +14,15 @@ diff -urN hotplug-2002_04_01.orig/etc/hotplug/hotplug.functions hotplug-2002_04_
  
  
  #
-diff -urN hotplug-2002_04_01.orig/etc/hotplug/pci.rc hotplug-2002_04_01/etc/hotplug/pci.rc
---- hotplug-2002_04_01.orig/etc/hotplug/pci.rc	Thu Mar 22 05:54:01 2001
-+++ hotplug-2002_04_01/etc/hotplug/pci.rc	Wed May 29 20:28:46 2002
+--- hotplug-2003_05_01/etc/hotplug/pci.rc.wiget	2003-04-15 18:38:42.000000000 +0200
++++ hotplug-2003_05_01/etc/hotplug/pci.rc	2003-06-25 22:39:22.000000000 +0200
 @@ -1,4 +1,4 @@
 -#!/bin/sh
 +#!/bin/bash
+ # vim: syntax=sh
  #
  # pci.rc	mostly to recover lost boot-time pci hotplug events
- #
-@@ -61,7 +61,7 @@
+@@ -62,7 +62,7 @@
  	pci_boot_events
          ;;
    stop)
@@ -33,12 +31,11 @@ diff -urN hotplug-2002_04_01.orig/etc/hotplug/pci.rc hotplug-2002_04_01/etc/hotp
          ;;
    status)
  	echo $"PCI Status for kernel: "  `uname -srm`
-diff -urN hotplug-2002_04_01.orig/etc/hotplug/usb.rc hotplug-2002_04_01/etc/hotplug/usb.rc
---- hotplug-2002_04_01.orig/etc/hotplug/usb.rc	Mon Apr  1 23:51:32 2002
-+++ hotplug-2002_04_01/etc/hotplug/usb.rc	Wed May 29 20:29:04 2002
+--- hotplug-2003_05_01/etc/hotplug/usb.rc.wiget	2003-04-15 18:38:43.000000000 +0200
++++ hotplug-2003_05_01/etc/hotplug/usb.rc	2003-06-25 22:39:53.000000000 +0200
 @@ -1,4 +1,4 @@
 -#!/bin/sh
 +#!/bin/bash
+ # vim: syntax=sh
  #
  # usb.rc	This brings the USB subsystem up and down safely.
- #

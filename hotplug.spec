@@ -1,12 +1,12 @@
 Summary:	Linux Hotplug Scripts
 Summary(pl):	Linuksowe skrypty do urz±dzeñ hotplug
 Name:		hotplug
-Version:	2002_08_26
+Version:	2003_05_01
 Release:	1
 Group:		Applications/System
 License:	GPL
 Source0:	http://dl.sourceforge.net/sourceforge/linux-hotplug/%{name}-%{version}.tar.gz
-# Source0-md5:	eb3e3aacfe072e7bd31a4e01fd8af2e0
+# Source0-md5:	bd3bd7de70dd06b37daf86feb5970c77
 Source1:	%{name}.init
 Patch0:		%{name}-PLD.patch
 URL:		http://linux-hotplug.sourceforge.net/
