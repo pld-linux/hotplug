@@ -17,12 +17,12 @@ Patch2:		%{name}-devlabel.patch
 URL:		http://linux-hotplug.sourceforge.net/
 PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
+Requires:	awk
+Requires:	bash
+Requires:	sed
 # Requires wc
 Requires:	textutils
-Requires:	awk
 Requires:	usbutils
-Requires:	sed
-Requires:	bash
 # it is _not_ noarch as it contains %{_libdir}/hotplug directory
 #BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -79,6 +79,8 @@ Summary:	Hotplug definitions for USB digital cameras
 Summary(pl):	Definicje Hotpluga dla aparatów cyfrowych na USB
 Group:		Applications/System
 PreReq:		libgphoto2
+Requires(pre):	/usr/bin/getgid
+Requires(pre):	/usr/sbin/groupadd
 Requires(post,postun):	fileutils
 Requires(post,postun):	grep
 Requires:	%{name} = %{version}-%{release}
@@ -115,13 +117,12 @@ install %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/hotplug/usb/digicam
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+# NOTE: don't restart hotplug on upgrade (not needed and does evil things
+# like reconfiguring hotplug-driven devices, disabling network connections
+# etc.)
+
 %post
 /sbin/chkconfig --add hotplug
-# Uncomment this out if we find that we need to restart the system when
-# we have loaded a new copy of the package.
-#if test -r /var/lock/subsys/hotplug ; then
-#	/etc/rc.d/init.d/hotplug restart >&2
-#fi
 
 %preun
 if [ "$1" = "0" ] ; then
@@ -132,8 +133,8 @@ if [ "$1" = "0" ] ; then
 fi
 
 %pre digicam
-if [ -n "`getgid digicam`" ]; then
-        if [ "`getgid digicam`" != "135" ]; then
+if [ -n "`/usr/bin/getgid digicam`" ]; then
+        if [ "`/usr/bin/getgid digicam`" != "135" ]; then
                 echo "Error: group digicam doesn't have gid=135. Correct this before installing hotplug." 1>&2
                 exit 1
         fi
