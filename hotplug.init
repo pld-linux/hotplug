@@ -21,7 +21,7 @@ case "$1" in
 	if [ ! -f /var/lock/subsys/hotplug ]; then
 		msg_starting "hotplug"
 		for RC in /etc/hotplug/*.rc; do
-			$RC start >/dev/null 2>&1
+			$RC start
 		done
 		ok
 		touch /var/lock/subsys/hotplug
@@ -34,7 +34,7 @@ case "$1" in
 	if [ -f /var/lock/subsys/hotplug ]; then
 		msg_stopping "hotplug"
 		for RC in /etc/hotplug/*.rc; do
-			$RC stop >/dev/null 2>&1
+			$RC stop
 		done
 		ok
 		rm -f /var/lock/subsys/hotplug >/dev/null 2>&1
