@@ -2,7 +2,7 @@ Summary:	Linux Hotplug Scripts
 Summary(pl):	Linuksowe skrypty do urz±dzeñ hotplug
 Name:		hotplug
 Version:	2003_05_01
-Release:	1
+Release:	2
 Group:		Applications/System
 License:	GPL
 Source0:	http://dl.sourceforge.net/sourceforge/linux-hotplug/%{name}-%{version}.tar.gz
@@ -37,12 +37,12 @@ Ten pakiet zawiera skrypty potrzebne do obs³ugi urz±dzeñ hotplug
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sbindir},%{_sysconfdir}/hotplug,/etc/rc.d/init.d,%{_mandir}/man8}
 
-install -m 755 sbin/* $RPM_BUILD_ROOT%{_sbindir}
+install -m 755 sbin/* debian/update-usb.usermap $RPM_BUILD_ROOT%{_sbindir}
 
 cp -a -r etc/hotplug/* $RPM_BUILD_ROOT%{_sysconfdir}/hotplug/
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/hotplug
-install *.8  $RPM_BUILD_ROOT%{_mandir}/man8
+install *.8 debian/*.8  $RPM_BUILD_ROOT%{_mandir}/man8
 
 %clean
 rm -rf $RPM_BUILD_ROOT
