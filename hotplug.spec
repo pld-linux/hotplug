@@ -2,7 +2,7 @@ Summary:	Linux Hotplug Scripts
 Summary(pl):	Linuksowe skrypty do urz±dzeñ hotplug
 Name:		hotplug
 Version:	2004_09_23
-Release:	1
+Release:	2
 Group:		Applications/System
 License:	GPL
 Source0:	ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/%{name}-%{version}.tar.bz2
@@ -85,6 +85,7 @@ Requires(pre):	/usr/sbin/groupadd
 Requires(postun):	/usr/sbin/groupdel
 Requires(post,postun):	fileutils
 Requires(post,postun):	grep
+Requires:	util-linux
 Requires:	%{name} = %{version}-%{release}
 Provides:	group(digicam)
 
