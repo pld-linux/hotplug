@@ -45,7 +45,7 @@ install -d $RPM_BUILD_ROOT%{_libdir}
 	sbindir=$RPM_BUILD_ROOT%{_sbindir} \
 	mandir=$RPM_BUILD_ROOT%{_mandir}
 
-install -m 755 sbin/* debian/update-usb.usermap $RPM_BUILD_ROOT%{_sbindir}
+install sbin/* debian/update-usb.usermap $RPM_BUILD_ROOT%{_sbindir}
 install *.8 debian/*.8  $RPM_BUILD_ROOT%{_mandir}/man8
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/hotplug
 ln -s %{_sysconfdir}/hotplug.d $RPM_BUILD_ROOT%{_libdir}/%{name}
@@ -73,7 +73,7 @@ fi
 %defattr(644,root,root,755)
 %doc README ChangeLog
 %attr(755,root,root) %{_sbindir}/*
-%attr(755,root,root) /etc/rc.d/init.d/*
+%attr(754,root,root) /etc/rc.d/init.d/*
 %dir %{_sysconfdir}/hotplug
 %attr(755,root,root) %{_sysconfdir}/hotplug/*.agent
 %attr(755,root,root) %{_sysconfdir}/hotplug/*.rc
