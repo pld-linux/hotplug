@@ -1,6 +1,6 @@
 diff -urN hotplug-2004_03_11.org/etc/hotplug/hotplug.functions hotplug-2004_03_11/etc/hotplug/hotplug.functions
---- hotplug-2004_03_11.org/etc/hotplug/hotplug.functions	2004-03-12 01:39:19.279717209 +0100
-+++ hotplug-2004_03_11/etc/hotplug/hotplug.functions	2004-03-12 01:39:48.118539442 +0100
+--- hotplug-2004_03_11.org/etc/hotplug/hotplug.functions	2004-03-12 03:13:42.662424064 +0100
++++ hotplug-2004_03_11/etc/hotplug/hotplug.functions	2004-03-12 03:13:51.189127808 +0100
 @@ -163,7 +163,7 @@
  	    LOADED=true
  	fi
@@ -10,9 +10,36 @@ diff -urN hotplug-2004_03_11.org/etc/hotplug/hotplug.functions hotplug-2004_03_1
  	    mesg "missing kernel or user mode driver $MODULE "
  	fi
  	if echo "$MODULE" | grep -q "usb-storage" > /dev/null 2>&1 ; then
+diff -urN hotplug-2004_03_11.org/etc/hotplug/ieee1394.agent hotplug-2004_03_11/etc/hotplug/ieee1394.agent
+--- hotplug-2004_03_11.org/etc/hotplug/ieee1394.agent	2004-03-12 03:13:42.662424064 +0100
++++ hotplug-2004_03_11/etc/hotplug/ieee1394.agent	2004-03-12 03:14:35.826341920 +0100
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ #
+ # IEEE1394-specific hotplug policy agent.
+ #
+diff -urN hotplug-2004_03_11.org/etc/hotplug/input.agent hotplug-2004_03_11/etc/hotplug/input.agent
+--- hotplug-2004_03_11.org/etc/hotplug/input.agent	2004-03-12 03:13:42.669423000 +0100
++++ hotplug-2004_03_11/etc/hotplug/input.agent	2004-03-12 03:14:41.987405296 +0100
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ #
+ # input-specific hotplug policy agent.
+ #
+diff -urN hotplug-2004_03_11.org/etc/hotplug/pci.agent hotplug-2004_03_11/etc/hotplug/pci.agent
+--- hotplug-2004_03_11.org/etc/hotplug/pci.agent	2004-03-12 03:13:42.663423912 +0100
++++ hotplug-2004_03_11/etc/hotplug/pci.agent	2004-03-12 03:14:53.378673560 +0100
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ #
+ # PCI-specific hotplug policy agent.
+ #
 diff -urN hotplug-2004_03_11.org/etc/hotplug/pci.rc hotplug-2004_03_11/etc/hotplug/pci.rc
---- hotplug-2004_03_11.org/etc/hotplug/pci.rc	2004-03-12 01:39:19.315709499 +0100
-+++ hotplug-2004_03_11/etc/hotplug/pci.rc	2004-03-12 01:44:15.178330689 +0100
+--- hotplug-2004_03_11.org/etc/hotplug/pci.rc	2004-03-12 03:13:42.664423760 +0100
++++ hotplug-2004_03_11/etc/hotplug/pci.rc	2004-03-12 03:13:51.191127504 +0100
 @@ -1,4 +1,4 @@
 -#!/bin/sh
 +#!/bin/bash
@@ -37,8 +64,14 @@ diff -urN hotplug-2004_03_11.org/etc/hotplug/pci.rc hotplug-2004_03_11/etc/hotpl
    stop)
  	# echo $"pci stop -- ignored"
 diff -urN hotplug-2004_03_11.org/etc/hotplug/usb.agent hotplug-2004_03_11/etc/hotplug/usb.agent
---- hotplug-2004_03_11.org/etc/hotplug/usb.agent	2004-03-12 01:39:19.327706929 +0100
-+++ hotplug-2004_03_11/etc/hotplug/usb.agent	2004-03-12 01:39:48.123538371 +0100
+--- hotplug-2004_03_11.org/etc/hotplug/usb.agent	2004-03-12 03:13:42.665423608 +0100
++++ hotplug-2004_03_11/etc/hotplug/usb.agent	2004-03-12 03:15:10.258107496 +0100
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ #
+ # USB-specific hotplug policy agent.
+ #
 @@ -128,7 +128,7 @@
      fi
  
@@ -67,8 +100,8 @@ diff -urN hotplug-2004_03_11.org/etc/hotplug/usb.agent hotplug-2004_03_11/etc/ho
      fi
      rm -f $REMOVER
 diff -urN hotplug-2004_03_11.org/etc/hotplug/usb.rc hotplug-2004_03_11/etc/hotplug/usb.rc
---- hotplug-2004_03_11.org/etc/hotplug/usb.rc	2004-03-12 01:39:19.329706500 +0100
-+++ hotplug-2004_03_11/etc/hotplug/usb.rc	2004-03-12 01:39:48.126537729 +0100
+--- hotplug-2004_03_11.org/etc/hotplug/usb.rc	2004-03-12 03:13:42.667423304 +0100
++++ hotplug-2004_03_11/etc/hotplug/usb.rc	2004-03-12 03:13:51.195126896 +0100
 @@ -1,4 +1,4 @@
 -#!/bin/sh
 +#!/bin/bash
@@ -94,8 +127,8 @@ diff -urN hotplug-2004_03_11.org/etc/hotplug/usb.rc hotplug-2004_03_11/etc/hotpl
      fi
  
 diff -urN hotplug-2004_03_11.org/etc/hotplug.d/default/default.hotplug hotplug-2004_03_11/etc/hotplug.d/default/default.hotplug
---- hotplug-2004_03_11.org/etc/hotplug.d/default/default.hotplug	2004-03-12 01:39:19.350702003 +0100
-+++ hotplug-2004_03_11/etc/hotplug.d/default/default.hotplug	2004-03-12 01:41:43.646791324 +0100
+--- hotplug-2004_03_11.org/etc/hotplug.d/default/default.hotplug	2004-03-12 03:13:42.671422696 +0100
++++ hotplug-2004_03_11/etc/hotplug.d/default/default.hotplug	2004-03-12 03:13:51.197126592 +0100
 @@ -28,7 +28,9 @@
  
  # DEBUG=yes export DEBUG
