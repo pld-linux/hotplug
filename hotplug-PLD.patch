@@ -1,0 +1,44 @@
+diff -urN hotplug-2002_04_01.orig/etc/hotplug/hotplug.functions hotplug-2002_04_01/etc/hotplug/hotplug.functions
+--- hotplug-2002_04_01.orig/etc/hotplug/hotplug.functions	Mon Apr  1 23:51:32 2002
++++ hotplug-2002_04_01/etc/hotplug/hotplug.functions	Wed May 29 20:27:54 2002
+@@ -42,10 +42,9 @@
+ # but some specialized ones (floppy based, etc) may not.  ("type -p"
+ # is also a bash-ism, more robust than "which".)
+ #
+-AWK=`type -p gawk`
+-if [ "$AWK" = "" ]; then
+-    AWK=`type -p awk`
+-fi
++# PLD/Linux: we guarantee there is /bin/awk (via RPM dependenties).
++#
++AWK="/bin/awk"
+ 
+ 
+ #
+diff -urN hotplug-2002_04_01.orig/etc/hotplug/pci.rc hotplug-2002_04_01/etc/hotplug/pci.rc
+--- hotplug-2002_04_01.orig/etc/hotplug/pci.rc	Thu Mar 22 05:54:01 2001
++++ hotplug-2002_04_01/etc/hotplug/pci.rc	Wed May 29 20:28:46 2002
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ #
+ # pci.rc	mostly to recover lost boot-time pci hotplug events
+ #
+@@ -61,7 +61,7 @@
+ 	pci_boot_events
+         ;;
+   stop)
+-	echo $"pci stop -- ignored"
++	#echo $"pci stop -- ignored"
+         ;;
+   status)
+ 	echo $"PCI Status for kernel: "  `uname -srm`
+diff -urN hotplug-2002_04_01.orig/etc/hotplug/usb.rc hotplug-2002_04_01/etc/hotplug/usb.rc
+--- hotplug-2002_04_01.orig/etc/hotplug/usb.rc	Mon Apr  1 23:51:32 2002
++++ hotplug-2002_04_01/etc/hotplug/usb.rc	Wed May 29 20:29:04 2002
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ #
+ # usb.rc	This brings the USB subsystem up and down safely.
+ #
