@@ -1,11 +1,12 @@
 Summary:	Linux Hotplug Scripts
 Summary(pl):	Linuksowe skrypty do urz±dzeñ hotplug
 Name:		hotplug
-Version:	2001_04_24
-Release:	3
+Version:	2002_04_01
+Release:	1
 Group:		Applications/System
 License:	GPL
 Source0:	http://prdownloads.sourceforge.net/linux-hotplug/%{name}-%{version}.tar.gz
+Source1:	%{name}.init
 URL:		http://linux-hotplug.sourceforge.net/
 BuildArch:	noarch
 Prereq:		/sbin/chkconfig
@@ -31,7 +32,7 @@ install -m 755 sbin/* $RPM_BUILD_ROOT%{_sbindir}
 
 cp -a -r etc/hotplug/* $RPM_BUILD_ROOT%{_sysconfdir}/hotplug/
 
-install etc/rc.d/init.d/* $RPM_BUILD_ROOT/etc/rc.d/init.d/
+install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/hotplug
 install *.8  $RPM_BUILD_ROOT%{_mandir}/man8
 
 gzip -9nf README ChangeLog
@@ -62,6 +63,8 @@ fi
 %attr(755,root,root) /etc/rc.d/init.d/*
 %attr(755,root,root) %{_sysconfdir}/hotplug/*.agent
 %attr(755,root,root) %{_sysconfdir}/hotplug/*.rc
+%dir %{_sysconfdir}/hotplug/usb
+%dir %{_sysconfdir}/hotplug/pci
 %{_sysconfdir}/hotplug/hotplug.functions
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/hotplug/blacklist
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/hotplug/*map
