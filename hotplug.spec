@@ -2,7 +2,7 @@ Summary:	Linux Hotplug Scripts
 Summary(pl):	Linuksowe skrypty do urz±dzeñ hotplug
 Name:		hotplug
 Version:	2001_04_24
-Release:	2
+Release:	3
 Group:		Applications/System
 License:	GPL
 Source0:	http://prdownloads.sourceforge.net/linux-hotplug/%{name}-%{version}.tar.gz
@@ -60,5 +60,9 @@ fi
 %doc {README,ChangeLog}.gz
 %attr(755,root,root) %{_sbindir}/*
 %attr(755,root,root) /etc/rc.d/init.d/*
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/hotplug/*
+%attr(755,root,root) %{_sysconfdir}/hotplug/*.agent
+%attr(755,root,root) %{_sysconfdir}/hotplug/*.rc
+%{_sysconfdir}/hotplug/hotplug.functions
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/hotplug/blacklist
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/hotplug/*map
 %{_mandir}/man8/*.8*
