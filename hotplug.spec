@@ -10,6 +10,7 @@ Source0:	ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/%{name}-%{version}.
 Source1:	%{name}.init
 Source2:	%{name}-update-usb.usermap
 Source3:	%{name}-update-usb.usermap.8
+Source4:	%{name}-digicam
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-ifup.patch
 URL:		http://linux-hotplug.sourceforge.net/
@@ -46,9 +47,9 @@ consistent framework for adding device and driver specific treatments.
 
 %description pci -l pl
 Ten modu³ s³u¿y g³ównie do odzyskiwania zdarzeñ hotplug PCI utraconych
-w czasie startu systemu. Powinien obs³ugiwaæ pod³±czanie urz±dzeñ
-PCI (w³±cznie z Cardbus) dla j±der 2.4.x i 2.6.x ze spójnym szkieletem
-do dodawania urz±dzeñ i zachowañ specyficznych dla sterownika.
+w czasie startu systemu. Powinien obs³ugiwaæ pod³±czanie urz±dzeñ PCI
+(w³±cznie z Cardbus) dla j±der 2.4.x i 2.6.x ze spójnym szkieletem do
+dodawania urz±dzeñ i zachowañ specyficznych dla sterownika.
 
 %package input
 Summary:	Hotplug input module
@@ -69,6 +70,21 @@ nie jest obs³ugiwane. Powinien obs³ugiwaæ pod³±czanie urz±dzeñ
 wej¶ciowych dla j±der 2.6.x ze spójnym szkieletem do dodawania
 urz±dzeñ i obs³ug± rzeczy specyficznych dla sterownika.
 
+%package digicam
+Summary:	Hotplug definitions for usb digital cameras
+Summary(pl):	Definicje Hotpluga dla aparatów cyfrowych na USB.
+Group:		Applications/System
+Requires:	%{name} = %{version}-%{release}
+Requires:	libgphoto2
+
+%description digicam
+This creates approperite definitions in usb.usermap for digital
+cameras based on output of libgphoto2.
+
+%description digicam -l pl
+Ten modó³ dodaje definicje dla aparatów cyfrowych opieraj±c siê na
+danych z libgphoto2.
+
 %prep
 %setup -q
 %patch0 -p1
@@ -88,6 +104,7 @@ install sbin/* %{SOURCE2} $RPM_BUILD_ROOT%{_sbindir}
 install *.8 %{SOURCE3}  $RPM_BUILD_ROOT%{_mandir}/man8
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/hotplug
 ln -s %{_sysconfdir}/hotplug.d $RPM_BUILD_ROOT%{_libdir}/%{name}
+install %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/hotplug/usb/digicam
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -108,6 +125,27 @@ if [ "$1" = "0" ] ; then
 	/sbin/chkconfig --del hotplug
 fi
 
+%pre digicam
+if [ -n "`getgid digicam`" ]; then
+        if [ "`getgid digicam`" != "135" ]; then
+                echo "Error: group digicam doesn't have gid=135. Correct this before installing hotplug." 1>&2
+                exit 1
+        fi
+else
+        /usr/sbin/groupadd -g 135 -r -f digicam
+fi
+
+%post digicam
+usermap="%{_sysconfdir}/hotplug/usb.usermap"
+tmpusermap="/tmp/usermap.$$"
+if [ -f "$usermap" ]; then
+	grep -v "digicam" $usermap > $tmpusermap
+	mv $tmpusermap $usermap
+	/usr/lib/libgphoto2/print-usb-usermap digicam | grep -v '#' >> $usermap
+else
+	/usr/lib/libgphoto2/print-usb-usermap digicam | grep -v '#' >> $usermap
+fi
+
 %files
 %defattr(644,root,root,755)
 %doc README ChangeLog
@@ -119,7 +157,7 @@ fi
 %attr(755,root,root) %{_sysconfdir}/hotplug/*.agent
 %attr(755,root,root) %{_sysconfdir}/hotplug/*.rc
 %dir %{_sysconfdir}/hotplug/usb
-%{_sysconfdir}/hotplug/hotplug.functions
+%exclude %{_sysconfdir}/hotplug/usb/digicam
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/hotplug/blacklist
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/hotplug/*map
 %dir %{_sysconfdir}/hotplug.d
@@ -136,3 +174,7 @@ fi
 %files input
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_sysconfdir}/hotplug/input.*
+
+%files digicam
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_sysconfdir}/hotplug/usb/digicam
