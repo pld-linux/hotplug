@@ -16,6 +16,7 @@ Patch1:		%{name}-ifup.patch
 Patch2:		%{name}-devlabel.patch
 URL:		http://linux-hotplug.sourceforge.net/
 PreReq:		rc-scripts
+BuildRequires:	rpmbuild(macros) >= 1.159
 Requires(post,preun):	/sbin/chkconfig
 Requires:	awk
 Requires:	bash
@@ -81,9 +82,11 @@ Group:		Applications/System
 PreReq:		libgphoto2
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
+Requires(postun):	/usr/sbin/groupdel
 Requires(post,postun):	fileutils
 Requires(post,postun):	grep
 Requires:	%{name} = %{version}-%{release}
+Provides:	group(digicam)
 
 %description digicam
 This creates appropriate definitions to usb.usermap for digital
@@ -139,7 +142,7 @@ if [ -n "`/usr/bin/getgid digicam`" ]; then
                 exit 1
         fi
 else
-        /usr/sbin/groupadd -g 135 -r -f digicam
+        /usr/sbin/groupadd -g 135 digicam
 fi
 
 %post digicam
@@ -165,6 +168,7 @@ if [ "$1" = "0" ]; then
 	        grep -v "digicam" $usermap > $tmpusermap
 	        mv -f $tmpusermap $usermap
 	fi
+	%groupremove digicam
 fi
 
 %files
