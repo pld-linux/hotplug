@@ -1,0 +1,64 @@
+diff -uNr hotplug-2004_04_01/etc/hotplug/ieee1394.agent hotplug-2004_04_01.devlabel/etc/hotplug/ieee1394.agent
+--- hotplug-2004_04_01/etc/hotplug/ieee1394.agent	2004-03-26 23:34:34.000000000 +0100
++++ hotplug-2004_04_01.devlabel/etc/hotplug/ieee1394.agent	2004-09-16 00:09:18.797072296 +0200
+@@ -103,6 +103,10 @@
+ 	mesg "... no drivers for $LABEL"
+ 	exit 2
+     fi
++
++    if [ -x /sbin/devlabel ]; then
++        /sbin/devlabel restart
++    fi
+     ;;
+ 
+ remove)
+@@ -113,6 +117,10 @@
+             $HOTPLUG_DIR/ieee1394/$MODULE
+ 	fi
+     done
++
++    if [ -x /sbin/devlabel ]; then
++        /sbin/devlabel restart
++    fi
+     ;;
+ 
+ *)
+diff -uNr hotplug-2004_04_01/etc/hotplug/pci.agent hotplug-2004_04_01.devlabel/etc/hotplug/pci.agent
+--- hotplug-2004_04_01/etc/hotplug/pci.agent	2004-03-26 23:36:38.000000000 +0100
++++ hotplug-2004_04_01.devlabel/etc/hotplug/pci.agent	2004-09-16 00:09:18.796072448 +0200
+@@ -147,6 +147,10 @@
+ 	debug_mesg "... no modules for $LABEL"
+ 	exit 2
+     fi
++
++    if [ -x /sbin/devlabel ]; then
++        /sbin/devlabel restart
++    fi
+     ;;
+ 
+ *)
+diff -uNr hotplug-2004_04_01/etc/hotplug/usb.agent hotplug-2004_04_01.devlabel/etc/hotplug/usb.agent
+--- hotplug-2004_04_01/etc/hotplug/usb.agent	2004-04-01 19:38:59.000000000 +0200
++++ hotplug-2004_04_01.devlabel/etc/hotplug/usb.agent	2004-09-16 00:09:18.799071992 +0200
+@@ -432,6 +432,10 @@
+ 	debug_mesg "... no modules for $LABEL"
+ 	exit 2
+     fi
++
++    if [ -x /sbin/devlabel ]; then
++        /sbin/devlabel restart
++    fi
+     ;;
+ 
+ remove)
+@@ -443,6 +447,10 @@
+     if [ -x /usr/sbin/updfstab ]; then
+         /usr/sbin/updfstab
+     fi
++
++    if [ -x /sbin/devlabel ]; then
++        /sbin/devlabel restart
++    fi
+     ;;
+ 
+ *)
