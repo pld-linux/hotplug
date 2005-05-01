@@ -16,7 +16,7 @@ Patch1:		%{name}-ifup.patch
 Patch2:		%{name}-devlabel.patch
 URL:		http://linux-hotplug.sourceforge.net/
 PreReq:		rc-scripts
-BuildRequires:	rpmbuild(macros) >= 1.159
+BuildRequires:	rpmbuild(macros) >= 1.202
 Requires(post,preun):	/sbin/chkconfig
 Requires:	awk
 Requires:	bash
@@ -137,14 +137,7 @@ if [ "$1" = "0" ] ; then
 fi
 
 %pre digicam
-if [ -n "`/usr/bin/getgid digicam`" ]; then
-        if [ "`/usr/bin/getgid digicam`" != "135" ]; then
-                echo "Error: group digicam doesn't have gid=135. Correct this before installing hotplug." 1>&2
-                exit 1
-        fi
-else
-        /usr/sbin/groupadd -g 135 digicam
-fi
+%groupadd -P %{name}-digicam -g 135 digicam
 
 %post digicam
 if [ "$1" = "1" ]; then
