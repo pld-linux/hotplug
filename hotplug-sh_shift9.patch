@@ -1,0 +1,40 @@
+diff -urN hotplug-2004_09_23-oryg/etc/hotplug/input.agent hotplug-2004_09_23/etc/hotplug/input.agent
+--- hotplug-2004_09_23-oryg/etc/hotplug/input.agent	2005-05-19 12:09:48.725781128 +0200
++++ hotplug-2004_09_23/etc/hotplug/input.agent	2005-05-19 12:10:57.797280664 +0200
+@@ -174,13 +174,12 @@
+ 	keyBits="$8"
+ 	relBits="$9"
+ 
+-	shift 9
+-	absBits="$1"
+-	cbsBits="$2"
+-	ledBits="$3"
+-	sndBits="$4"
+-	ffBits="$5"
+-	driverInfo=$(($6))
++	absBits="${10}"
++	cbsBits="${11}"
++	ledBits="${12}"
++	sndBits="${13}"
++	ffBits="${14}"
++	driverInfo=$((${15}))
+ 
+ 	: checkmatch $module
+ 
+diff -urN hotplug-2004_09_23-oryg/etc/hotplug/usb.agent hotplug-2004_09_23/etc/hotplug/usb.agent
+--- hotplug-2004_09_23-oryg/etc/hotplug/usb.agent	2005-05-19 12:09:48.727780824 +0200
++++ hotplug-2004_09_23/etc/hotplug/usb.agent	2005-05-19 12:11:44.217223760 +0200
+@@ -265,10 +265,9 @@
+ 	bDeviceSubClass=$(($8))
+ 	bDeviceProtocol=$(($9))
+ 
+-	shift 9
+-	bInterfaceClass=$(($1))
+-	bInterfaceSubClass=$(($2))
+-	bInterfaceProtocol=$(($3))
++	bInterfaceClass=$((${10}))
++	bInterfaceSubClass=$((${11}))
++	bInterfaceProtocol=$((${12}))
+ 
+ 	: checkmatch $module
+ 

@@ -14,6 +14,7 @@ Source4:	%{name}-digicam
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-ifup.patch
 Patch2:		%{name}-devlabel.patch
+Patch3:		%{name}-sh_shift9.patch
 URL:		http://linux-hotplug.sourceforge.net/
 PreReq:		rc-scripts
 BuildRequires:	rpmbuild(macros) >= 1.202
@@ -102,6 +103,7 @@ danych z libgphoto2.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
