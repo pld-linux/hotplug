@@ -2,7 +2,7 @@ Summary:	Linux Hotplug Scripts
 Summary(pl):	Linuksowe skrypty do urz±dzeñ hotplug
 Name:		hotplug
 Version:	2004_09_23
-Release:	2
+Release:	3
 Group:		Applications/System
 License:	GPL
 Source0:	ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/%{name}-%{version}.tar.bz2
@@ -75,6 +75,19 @@ których sterowniki zosta³y wkompilowane w j±dro. Aktualnie wy³±czanie
 nie jest obs³ugiwane. Powinien obs³ugiwaæ pod³±czanie urz±dzeñ
 wej¶ciowych dla j±der 2.6.x ze spójnym szkieletem do dodawania
 urz±dzeñ i obs³ug± rzeczy specyficznych dla sterownika.
+
+%package isapnp
+Summary:	Hotplug isapnp module
+Summary(pl):	Modu³ isapnp do hotpluga
+Group:		Applications/System
+Requires:	%{name} = %{version}-%{release}
+
+%description isapnp
+This module supports PnP ISA cards. Stopping is not supported.
+
+%description isapnp -l pl
+Ten modu³ obs³uguje karty PnP ISA. Wy³±czanie urz±dzeñ nie jest
+obs³ugiwane.
 
 %package digicam
 Summary:	Hotplug definitions for USB digital cameras
@@ -175,6 +188,7 @@ fi
 %dir %{_sysconfdir}/hotplug
 %exclude %{_sysconfdir}/hotplug/pci.*
 %exclude %{_sysconfdir}/hotplug/input.*
+%exclude %{_sysconfdir}/hotplug/pnp.*
 %{_sysconfdir}/hotplug/hotplug.functions
 %attr(755,root,root) %{_sysconfdir}/hotplug/*.agent
 %attr(755,root,root) %{_sysconfdir}/hotplug/*.rc
@@ -199,6 +213,11 @@ fi
 %files input
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_sysconfdir}/hotplug/input.*
+
+%files isapnp
+%defattr(644,root,root,755)
+%{_sysconfdir}/hotplug/pnp.*
+%attr(755,root,root) %{_sysconfdir}/hotplug/pnp.rc
 
 %files digicam
 %defattr(644,root,root,755)
