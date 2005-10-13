@@ -2,7 +2,7 @@ Summary:	Linux Hotplug Scripts
 Summary(pl):	Linuksowe skrypty do urz±dzeñ hotplug
 Name:		hotplug
 Version:	2004_09_23
-Release:	3
+Release:	4
 Group:		Applications/System
 License:	GPL
 Source0:	ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/%{name}-%{version}.tar.bz2
@@ -16,9 +16,10 @@ Patch1:		%{name}-ifup.patch
 Patch2:		%{name}-devlabel.patch
 Patch3:		%{name}-sh_shift9.patch
 URL:		http://linux-hotplug.sourceforge.net/
-PreReq:		rc-scripts
 BuildRequires:	rpmbuild(macros) >= 1.202
 Requires(post,preun):	/sbin/chkconfig
+Requires:	rc-scripts
+Requires:	/sbin/chkconfig
 Requires:	awk
 Requires:	bash
 Requires:	sed
@@ -93,12 +94,12 @@ obs³ugiwane.
 Summary:	Hotplug definitions for USB digital cameras
 Summary(pl):	Definicje Hotpluga dla aparatów cyfrowych na USB
 Group:		Applications/System
-PreReq:		libgphoto2
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(postun):	/usr/sbin/groupdel
 Requires(post,postun):	fileutils
 Requires(post,postun):	grep
+Requires:	libgphoto2
 Requires:	util-linux
 Requires:	%{name} = %{version}-%{release}
 Provides:	group(digicam)
@@ -194,9 +195,9 @@ fi
 %attr(755,root,root) %{_sysconfdir}/hotplug/*.rc
 %dir %{_sysconfdir}/hotplug/usb
 %exclude %{_sysconfdir}/hotplug/usb/digicam
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/hotplug/blacklist
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/hotplug/*map
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/hotplug/*.permissions
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/hotplug/blacklist
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/hotplug/*map
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/hotplug/*.permissions
 %dir %{_sysconfdir}/hotplug.d
 %dir %{_sysconfdir}/hotplug.d/default
 %attr(755,root,root) %{_sysconfdir}/hotplug.d/default/*.hotplug
