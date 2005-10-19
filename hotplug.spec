@@ -94,6 +94,7 @@ obs³ugiwane.
 Summary:	Hotplug definitions for USB digital cameras
 Summary(pl):	Definicje Hotpluga dla aparatów cyfrowych na USB
 Group:		Applications/System
+Obsoletes:	udev-digicam
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(postun):	/usr/sbin/groupdel
