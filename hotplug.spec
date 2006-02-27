@@ -1,3 +1,5 @@
+# TODO
+# - define _libdir as /lib for all arch?
 Summary:	Linux Hotplug Scripts
 Summary(pl):	Linuksowe skrypty do urz±dzeñ hotplug
 Name:		hotplug
@@ -162,6 +164,7 @@ if [ "$1" = "1" ]; then
 	if [ -f "$usermap" ]; then
 		grep -v "digicam" $usermap > $tmpusermap
 		mv -f $tmpusermap $usermap
+# FIXME: lib64!
 		/usr/lib/libgphoto2/print-usb-usermap digicam | grep -v '#' >> $usermap
 	else
 		/usr/lib/libgphoto2/print-usb-usermap digicam | grep -v '#' >> $usermap
