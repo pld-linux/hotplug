@@ -3,8 +3,8 @@ Summary(pl):	Linuksowe skrypty do urz±dzeñ hotplug
 Name:		hotplug
 Version:	2004_09_23
 Release:	4
-Group:		Applications/System
 License:	GPL
+Group:		Applications/System
 Source0:	ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/%{name}-%{version}.tar.bz2
 # Source0-md5:	58e6995f9df71ce59b0ec2787019e5fe
 Source1:	%{name}.init
@@ -16,12 +16,12 @@ Patch1:		%{name}-ifup.patch
 Patch2:		%{name}-devlabel.patch
 Patch3:		%{name}-sh_shift9.patch
 URL:		http://linux-hotplug.sourceforge.net/
-BuildRequires:	rpmbuild(macros) >= 1.202
+BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post,preun):	/sbin/chkconfig
-Requires:	rc-scripts
 Requires:	/sbin/chkconfig
 Requires:	awk
 Requires:	bash
+Requires:	rc-scripts
 Requires:	sed
 # Requires wc
 Requires:	textutils
@@ -94,16 +94,16 @@ obs³ugiwane.
 Summary:	Hotplug definitions for USB digital cameras
 Summary(pl):	Definicje Hotpluga dla aparatów cyfrowych na USB
 Group:		Applications/System
-Obsoletes:	udev-digicam
-Requires(pre):	/usr/bin/getgid
-Requires(pre):	/usr/sbin/groupadd
-Requires(postun):	/usr/sbin/groupdel
 Requires(post,postun):	fileutils
 Requires(post,postun):	grep
+Requires(postun):	/usr/sbin/groupdel
+Requires(pre):	/usr/bin/getgid
+Requires(pre):	/usr/sbin/groupadd
+Requires:	%{name} = %{version}-%{release}
 Requires:	libgphoto2
 Requires:	util-linux
-Requires:	%{name} = %{version}-%{release}
 Provides:	group(digicam)
+Obsoletes:	udev-digicam
 
 %description digicam
 This creates appropriate definitions to usb.usermap for digital
@@ -147,9 +147,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %preun
 if [ "$1" = "0" ] ; then
-	if [ -f /var/lock/subsys/hotplug ]; then
-		/etc/rc.d/init.d/hotplug stop >&2
-	fi
+	%service hotplug stop
 	/sbin/chkconfig --del hotplug
 fi
 
@@ -176,8 +174,8 @@ if [ "$1" = "0" ]; then
 	tmpusermap="${usermap}.tmp"
 	umask 022
 	if [ -f "$usermap" ]; then
-	        grep -v "digicam" $usermap > $tmpusermap
-	        mv -f $tmpusermap $usermap
+		grep -v "digicam" $usermap > $tmpusermap
+		mv -f $tmpusermap $usermap
 	fi
 	%groupremove digicam
 fi
