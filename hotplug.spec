@@ -4,7 +4,7 @@ Summary:	Linux Hotplug Scripts
 Summary(pl):	Linuksowe skrypty do urz±dzeñ hotplug
 Name:		hotplug
 Version:	2004_09_23
-Release:	4
+Release:	5
 License:	GPL
 Group:		Applications/System
 Source0:	ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/%{name}-%{version}.tar.bz2
@@ -33,8 +33,9 @@ Requires:	usbutils
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_exec_prefix	/
-%define		_libdir		/%{_lib}
-%define		_sbindir	/sbin
+%define		_libdir			/%{_lib}
+%define		_sbindir		/sbin
+%define		_gphoto_lib		/usr/%{_lib}/libgphoto2
 
 %description
 This package contains the scripts necessary for hotplug Linux support.
@@ -96,8 +97,9 @@ obs³ugiwane.
 Summary:	Hotplug definitions for USB digital cameras
 Summary(pl):	Definicje Hotpluga dla aparatów cyfrowych na USB
 Group:		Applications/System
+Requires(post):	grep
 Requires(post,postun):	fileutils
-Requires(post,postun):	grep
+Requires(post,postun):	sed >= 4.0
 Requires(postun):	/usr/sbin/groupdel
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
@@ -159,26 +161,20 @@ fi
 %post digicam
 if [ "$1" = "1" ]; then
 	usermap="%{_sysconfdir}/hotplug/usb.usermap"
-	tmpusermap="${usermap}.tmp"
-	umask 022
 	if [ -f "$usermap" ]; then
-		grep -v "digicam" $usermap > $tmpusermap
-		mv -f $tmpusermap $usermap
-# FIXME: lib64!
-		/usr/lib/libgphoto2/print-usb-usermap digicam | grep -v '#' >> $usermap
+		%{__sed} -i -e '/digicam/d' $usermap
+		%{_gphoto_lib}/print-usb-usermap digicam | grep -v '#' >> "$usermap"
 	else
-		/usr/lib/libgphoto2/print-usb-usermap digicam | grep -v '#' >> $usermap
+		umask 022
+		%{_gphoto_lib}/print-usb-usermap digicam | grep -v '#' > "$usermap"
 	fi
 fi
 
 %postun digicam
 if [ "$1" = "0" ]; then
 	usermap="%{_sysconfdir}/hotplug/usb.usermap"
-	tmpusermap="${usermap}.tmp"
-	umask 022
 	if [ -f "$usermap" ]; then
-		grep -v "digicam" $usermap > $tmpusermap
-		mv -f $tmpusermap $usermap
+		%{__sed} -i -e '/digicam/d' "$usermap"
 	fi
 	%groupremove digicam
 fi
