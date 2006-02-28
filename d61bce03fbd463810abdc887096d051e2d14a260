@@ -1,0 +1,4 @@
+- added a patch adapting hotplug to PLD readlink
+- won't build yet, 'cause hotplug-digicam is missing from the CVS; when
+  found, please rebuild to make package usable
+- release++
