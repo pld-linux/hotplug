@@ -14,10 +14,7 @@
 # Source function library
 . /etc/rc.d/init.d/functions
 
-RETVAL=0
-# See how we were called.
-case "$1" in
-  start)
+start() {
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/hotplug ]; then
 		msg_starting "hotplug"
@@ -32,8 +29,9 @@ case "$1" in
 	else
 		msg_already_running "hotplug"
 	fi
-	;;
-  stop)
+}
+
+stop() {
 	if [ -f /var/lock/subsys/hotplug ]; then
 		msg_stopping "hotplug"
 		busy
@@ -45,6 +43,16 @@ case "$1" in
 	else
 		msg_not_running "hotplug"
 	fi
+}
+
+RETVAL=0
+# See how we were called.
+case "$1" in
+  start)
+  	start
+	;;
+  stop)
+  	stop
 	;;
   status)
   	for RC in /etc/hotplug/*.rc; do
@@ -54,9 +62,8 @@ case "$1" in
 	done
 	;;
   restart|force-reload)
-	$0 stop
-	$0 start
-	exit $?
+	stop
+	start
 	;;
   *)
 	msg_usage "$0 {start|stop|restart|force-reload|status}"
