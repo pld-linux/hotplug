@@ -1,7 +1,7 @@
 # TODO
 # - define _libdir as /lib for all arch?
 Summary:	Linux Hotplug Scripts
-Summary(pl):	Linuksowe skrypty do urz±dzeñ hotplug
+Summary(pl.UTF-8):   Linuksowe skrypty do urzÄ…dzeÅ„ hotplug
 Name:		hotplug
 Version:	2004_09_23
 Release:	8
@@ -40,13 +40,13 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 This package contains the scripts necessary for hotplug Linux support.
 
-%description -l pl
-Ten pakiet zawiera skrypty potrzebne do obs³ugi urz±dzeñ hotplug
-(pod³±czanych w czasie pracy) pod Linuksem.
+%description -l pl.UTF-8
+Ten pakiet zawiera skrypty potrzebne do obsÅ‚ugi urzÄ…dzeÅ„ hotplug
+(podÅ‚Ä…czanych w czasie pracy) pod Linuksem.
 
 %package pci
 Summary:	Hotplug pci module
-Summary(pl):	Modu³ pci do hotpluga
+Summary(pl.UTF-8):   ModuÅ‚ pci do hotpluga
 Group:		Applications/System
 Requires:	%{name} = %{version}-%{release}
 
@@ -55,15 +55,15 @@ This is mostly to recover lost boot-time PCI hotplug events. Should
 handle 2.4.x and 2.6.x PCI (including Cardbus) hotplugging, with a
 consistent framework for adding device and driver specific treatments.
 
-%description pci -l pl
-Ten modu³ s³u¿y g³ównie do odzyskiwania zdarzeñ hotplug PCI utraconych
-w czasie startu systemu. Powinien obs³ugiwaæ pod³±czanie urz±dzeñ PCI
-(w³±cznie z Cardbus) dla j±der 2.4.x i 2.6.x ze spójnym szkieletem do
-dodawania urz±dzeñ i zachowañ specyficznych dla sterownika.
+%description pci -l pl.UTF-8
+Ten moduÅ‚ sÅ‚uÅ¼y gÅ‚Ã³wnie do odzyskiwania zdarzeÅ„ hotplug PCI utraconych
+w czasie startu systemu. Powinien obsÅ‚ugiwaÄ‡ podÅ‚Ä…czanie urzÄ…dzeÅ„ PCI
+(wÅ‚Ä…cznie z Cardbus) dla jÄ…der 2.4.x i 2.6.x ze spÃ³jnym szkieletem do
+dodawania urzÄ…dzeÅ„ i zachowaÅ„ specyficznych dla sterownika.
 
 %package input
 Summary:	Hotplug input module
-Summary(pl):	Modu³ input do hotpluga
+Summary(pl.UTF-8):   ModuÅ‚ input do hotpluga
 Group:		Applications/System
 Requires:	%{name} = %{version}-%{release}
 
@@ -73,29 +73,29 @@ in kernel. Currently stopping is not supported. Should handle 2.6.x
 input hotplugging, with a consistent framework for adding device and
 driver specific handling.
 
-%description input -l pl
-Ten modu³ wczytuje programy obs³uguj±ce te urz±dzenia wej¶ciowe, dla
-których sterowniki zosta³y wkompilowane w j±dro. Aktualnie wy³±czanie
-nie jest obs³ugiwane. Powinien obs³ugiwaæ pod³±czanie urz±dzeñ
-wej¶ciowych dla j±der 2.6.x ze spójnym szkieletem do dodawania
-urz±dzeñ i obs³ug± rzeczy specyficznych dla sterownika.
+%description input -l pl.UTF-8
+Ten moduÅ‚ wczytuje programy obsÅ‚ugujÄ…ce te urzÄ…dzenia wejÅ›ciowe, dla
+ktÃ³rych sterowniki zostaÅ‚y wkompilowane w jÄ…dro. Aktualnie wyÅ‚Ä…czanie
+nie jest obsÅ‚ugiwane. Powinien obsÅ‚ugiwaÄ‡ podÅ‚Ä…czanie urzÄ…dzeÅ„
+wejÅ›ciowych dla jÄ…der 2.6.x ze spÃ³jnym szkieletem do dodawania
+urzÄ…dzeÅ„ i obsÅ‚ugÄ… rzeczy specyficznych dla sterownika.
 
 %package isapnp
 Summary:	Hotplug isapnp module
-Summary(pl):	Modu³ isapnp do hotpluga
+Summary(pl.UTF-8):   ModuÅ‚ isapnp do hotpluga
 Group:		Applications/System
 Requires:	%{name} = %{version}-%{release}
 
 %description isapnp
 This module supports PnP ISA cards. Stopping is not supported.
 
-%description isapnp -l pl
-Ten modu³ obs³uguje karty PnP ISA. Wy³±czanie urz±dzeñ nie jest
-obs³ugiwane.
+%description isapnp -l pl.UTF-8
+Ten moduÅ‚ obsÅ‚uguje karty PnP ISA. WyÅ‚Ä…czanie urzÄ…dzeÅ„ nie jest
+obsÅ‚ugiwane.
 
 %package digicam
 Summary:	Hotplug definitions for USB digital cameras
-Summary(pl):	Definicje Hotpluga dla aparatów cyfrowych na USB
+Summary(pl.UTF-8):   Definicje Hotpluga dla aparatÃ³w cyfrowych na USB
 Group:		Applications/System
 Requires(post):	grep
 Requires(post,postun):	fileutils
@@ -113,8 +113,8 @@ Obsoletes:	udev-digicam
 This creates appropriate definitions to usb.usermap for digital
 cameras based on output of libgphoto2.
 
-%description digicam -l pl
-Ten modu³ dodaje definicje dla aparatów cyfrowych opieraj±c siê na
+%description digicam -l pl.UTF-8
+Ten moduÅ‚ dodaje definicje dla aparatÃ³w cyfrowych opierajÄ…c siÄ™ na
 danych z libgphoto2.
 
 %prep
