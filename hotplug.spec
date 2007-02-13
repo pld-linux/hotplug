@@ -1,7 +1,7 @@
 # TODO
 # - define _libdir as /lib for all arch?
 Summary:	Linux Hotplug Scripts
-Summary(pl.UTF-8):   Linuksowe skrypty do urządzeń hotplug
+Summary(pl.UTF-8):	Linuksowe skrypty do urządzeń hotplug
 Name:		hotplug
 Version:	2004_09_23
 Release:	8
@@ -46,7 +46,7 @@ Ten pakiet zawiera skrypty potrzebne do obsługi urządzeń hotplug
 
 %package pci
 Summary:	Hotplug pci module
-Summary(pl.UTF-8):   Moduł pci do hotpluga
+Summary(pl.UTF-8):	Moduł pci do hotpluga
 Group:		Applications/System
 Requires:	%{name} = %{version}-%{release}
 
@@ -63,7 +63,7 @@ dodawania urządzeń i zachowań specyficznych dla sterownika.
 
 %package input
 Summary:	Hotplug input module
-Summary(pl.UTF-8):   Moduł input do hotpluga
+Summary(pl.UTF-8):	Moduł input do hotpluga
 Group:		Applications/System
 Requires:	%{name} = %{version}-%{release}
 
@@ -82,7 +82,7 @@ urządzeń i obsługą rzeczy specyficznych dla sterownika.
 
 %package isapnp
 Summary:	Hotplug isapnp module
-Summary(pl.UTF-8):   Moduł isapnp do hotpluga
+Summary(pl.UTF-8):	Moduł isapnp do hotpluga
 Group:		Applications/System
 Requires:	%{name} = %{version}-%{release}
 
@@ -95,7 +95,7 @@ obsługiwane.
 
 %package digicam
 Summary:	Hotplug definitions for USB digital cameras
-Summary(pl.UTF-8):   Definicje Hotpluga dla aparatów cyfrowych na USB
+Summary(pl.UTF-8):	Definicje Hotpluga dla aparatów cyfrowych na USB
 Group:		Applications/System
 Requires(post):	grep
 Requires(post,postun):	fileutils
