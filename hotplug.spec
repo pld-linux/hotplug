@@ -1,5 +1,3 @@
-# TODO
-# - define _libdir as /lib for all arch?
 Summary:	Linux Hotplug Scripts
 Summary(pl.UTF-8):	Linuksowe skrypty do urządzeń hotplug
 Name:		hotplug
@@ -28,14 +26,13 @@ Requires:	sed
 # Requires wc
 Requires:	textutils
 Requires:	usbutils
-# it is _not_ noarch as it contains %{_libdir}/hotplug directory
+# it is _not_ noarch as -digicam uses /usr/%{_lib}/libgphoto2 directory
 #BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_exec_prefix	/
-%define		_libdir			/%{_lib}
-%define		_sbindir		/sbin
-%define		_gphoto_lib		/usr/%{_lib}/libgphoto2
+%define		_sbindir	/sbin
+%define		_gphoto_lib	/usr/%{_lib}/libgphoto2
 
 %description
 This package contains the scripts necessary for hotplug Linux support.
@@ -104,7 +101,7 @@ Requires(postun):	/usr/sbin/groupdel
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires:	%{name} = %{version}-%{release}
-Requires:	libgphoto2
+Requires:	libgphoto2 >= 2.3.1
 Requires:	util-linux
 Provides:	group(digicam)
 Obsoletes:	udev-digicam
@@ -126,18 +123,19 @@ danych z libgphoto2.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_libdir},%{_sbindir},%{_sysconfdir}/hotplug,/etc/rc.d/init.d,%{_mandir}/man8}
+install -d $RPM_BUILD_ROOT{%{_sbindir},%{_sysconfdir}/hotplug/addons.d/digicam,/etc/rc.d/init.d,%{_mandir}/man8}
 
 %{__make} install \
 	prefix=$RPM_BUILD_ROOT
 
-install etc/hotplug/{dasd.permissions,pnp.distmap,tape.permissions} $RPM_BUILD_ROOT%{_sysconfdir}/hotplug/
+install etc/hotplug/{dasd.permissions,pnp.distmap,tape.permissions} $RPM_BUILD_ROOT%{_sysconfdir}/hotplug
 
 install %{SOURCE2} $RPM_BUILD_ROOT%{_sbindir}
 install %{SOURCE3} $RPM_BUILD_ROOT%{_mandir}/man8
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/hotplug
-ln -s %{_sysconfdir}/hotplug.d $RPM_BUILD_ROOT%{_libdir}/%{name}
 install %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/hotplug/usb/digicam
+
+:> $RPM_BUILD_ROOT%{_sysconfdir}/hotplug/addons.d/digicam/usb.usermap
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -160,31 +158,29 @@ fi
 
 %post digicam
 if [ "$1" = "1" ]; then
-	usermap="%{_sysconfdir}/hotplug/usb.usermap"
-	if [ -f "$usermap" ]; then
-		%{__sed} -i -e '/digicam/d' $usermap
-		%{_gphoto_lib}/print-usb-usermap digicam | grep -v '#' >> "$usermap"
-	else
-		umask 022
-		%{_gphoto_lib}/print-usb-usermap digicam | grep -v '#' > "$usermap"
-	fi
+	usermap="%{_sysconfdir}/hotplug/addons.d/digicam/usb.usermap"
+	%{_gphoto_lib}/print-camera-list usb-usermap > "$usermap"
+	/sbin/hotplug-update-usb.usermap >/dev/null
 fi
 
 %postun digicam
 if [ "$1" = "0" ]; then
-	usermap="%{_sysconfdir}/hotplug/usb.usermap"
+	usermap="%{_sysconfdir}/hotplug/addons.d/digicam/usb.usermap"
 	if [ -f "$usermap" ]; then
-		%{__sed} -i -e '/digicam/d' "$usermap"
+		rm -f "$usermap"
 	fi
+	/sbin/hotplug-update-usb.usermap >/dev/null
 	%groupremove digicam
 fi
 
 %files
 %defattr(644,root,root,755)
 %doc README ChangeLog
-%attr(755,root,root) %{_sbindir}/*
-%attr(754,root,root) /etc/rc.d/init.d/*
+%attr(755,root,root) %{_sbindir}/hotplug
+%attr(755,root,root) %{_sbindir}/hotplug-update-usb.usermap
+%attr(754,root,root) /etc/rc.d/init.d/hotplug
 %dir %{_sysconfdir}/hotplug
+%dir %{_sysconfdir}/hotplug/addons.d
 %exclude %{_sysconfdir}/hotplug/pci.*
 %exclude %{_sysconfdir}/hotplug/input.*
 %exclude %{_sysconfdir}/hotplug/pnp.*
@@ -199,7 +195,6 @@ fi
 %dir %{_sysconfdir}/hotplug.d
 %dir %{_sysconfdir}/hotplug.d/default
 %attr(755,root,root) %{_sysconfdir}/hotplug.d/default/*.hotplug
-%{_libdir}/hotplug
 %{_mandir}/man8/*.8*
 %dir /var/run/usb
 %dir /var/log/hotplug
@@ -220,4 +215,6 @@ fi
 
 %files digicam
 %defattr(644,root,root,755)
+%dir %{_sysconfdir}/hotplug/addons.d/digicam
+%ghost %{_sysconfdir}/hotplug/addons.d/digicam/usb.usermap
 %attr(755,root,root) %{_sysconfdir}/hotplug/usb/digicam
