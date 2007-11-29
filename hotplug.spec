@@ -133,7 +133,7 @@ install etc/hotplug/{dasd.permissions,pnp.distmap,tape.permissions} $RPM_BUILD_R
 install %{SOURCE2} $RPM_BUILD_ROOT%{_sbindir}
 install %{SOURCE3} $RPM_BUILD_ROOT%{_mandir}/man8
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/hotplug
-install %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/hotplug/usb/digicam
+install %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/hotplug/usb/usbcam
 
 :> $RPM_BUILD_ROOT%{_sysconfdir}/hotplug/addons.d/digicam/usb.usermap
 
@@ -230,4 +230,4 @@ fi
 %defattr(644,root,root,755)
 %dir %{_sysconfdir}/hotplug/addons.d/digicam
 %ghost %{_sysconfdir}/hotplug/addons.d/digicam/usb.usermap
-%attr(755,root,root) %{_sysconfdir}/hotplug/usb/digicam
+%attr(755,root,root) %{_sysconfdir}/hotplug/usb/usbcam
