@@ -3,7 +3,7 @@
 # Copyright (c) 2001 Fumitoshi UKAI <ukai@debian.or.jp>
 # GPL
 
-LIBDIR=/usr/lib/hotplug
+LIBDIR=/etc/hotplug/addons.d
 USERMAP=/etc/hotplug/usb.usermap
 LOCALMAP=/etc/hotplug/usb.usermap.local
 
